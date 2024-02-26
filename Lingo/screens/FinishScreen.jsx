@@ -16,6 +16,8 @@ export default function FinishScreen({ navigation,route }) {
     navigation.navigate("HomeScreen");
   }
 
+  
+
   let scoreText;
   
   const percentageCorrect = ((totalCorrectAnswers+1) / totalQuestionsCount) * 100;
