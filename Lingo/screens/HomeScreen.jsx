@@ -13,6 +13,7 @@ export default function HomeScreen() {
 ];
     dispatch({ type: 'SET_LESSONS', payload: lesson });
   
+
     
   return (
     <SafeAreaView style={styles.container}>
