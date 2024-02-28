@@ -1,13 +1,27 @@
-import {useState} from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import CountryFlag from "react-native-country-flag";
 import { GlobalStyles } from "../../constants/Colors";
 
 import { Button, IconButton, Divider } from "react-native-paper";
 import { shareContent } from "../../utils/share";
-import AddFrensModal from './AddFrendsModal'
+import AddFrensModal from "./AddFrendsModal";
+import {
+  selectUserName,
+  selectName,
+  selectCurrentCourse,
+  selectJoinedDate,
+} from "../../redux/userReducer";
+import { useSelector } from "react-redux";
 
 export default function ProfileInformation() {
+  const name = useSelector(selectName)
+  const userName = useSelector(selectUserName);
+  const joinedDate = new Date(useSelector(selectJoinedDate));
+  const currentCourse = useSelector(selectCurrentCourse);
+  const joinedMonth = joinedDate.toLocaleString('default',{month:'long'})
+  const joinedYear = joinedDate.getFullYear()
+
   const [modalOpen, setModalOpen] = useState(false);
   const onShare = () => {
     const message =
@@ -16,20 +30,19 @@ export default function ProfileInformation() {
   };
   const closeModal = () => setModalOpen(false);
 
-  function addFrensModal(){
-    setModalOpen(true)
-
+  function addFrensModal() {
+    setModalOpen(true);
   }
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <Text style={styles.name}>Aleksandar Grigorov</Text>
-        <CountryFlag isoCode="de" size={25} style={styles.flag} />
+        <Text style={styles.name}>{name}</Text>
+        <CountryFlag isoCode={currentCourse} size={25} style={styles.flag} />
       </View>
 
-      <Text style={styles.userName}>Aleksandar240902</Text>
-      <Text style={styles.joined}>Joined April 2020</Text>
+      <Text style={styles.userName}>{userName}</Text>
+      <Text style={styles.joined}>Joined {joinedMonth} {joinedYear}</Text>
 
       <View style={styles.followers}>
         <Text style={styles.followersText}>0 following </Text>
@@ -57,11 +70,7 @@ export default function ProfileInformation() {
       </View>
       <Divider style={{ height: 1.5 }} />
 
-      <AddFrensModal
-        modalVisible={modalOpen}
-        setModalVisible={closeModal}
-        
-      />
+      <AddFrensModal modalVisible={modalOpen} setModalVisible={closeModal} />
     </View>
   );
 }

@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import StatisticsButton from "../UI/StatisticsButton";
 
 import CustomModal from "../UI/CustomModal";
-
+import { selectDaysStreak,selectTotalXp } from "../../redux/userReducer";
+import { useSelector } from "react-redux";
 export default function Statistics() {
+  const steak = useSelector(selectDaysStreak)
+  const totalXp = useSelector(selectTotalXp)
   const [modalOpen, setModalOpen] = useState(false);
   const [pressedStatisticInfo, setPressedStatisticInfo] = useState();
 
@@ -22,14 +25,14 @@ export default function Statistics() {
         <StatisticsButton
           icon="fire"
           iconColor="red"
-          boldText="0"
+          boldText={steak}
           grayText="Day streak"
           onPress={() => handleButtonPress("fire", "You' ve earned 0 Day Steak", "Play every day to keep your day streak!",'red',"I've earned 0 Day Steak")}
         />
         <StatisticsButton
           icon="flash-outline"
           iconColor="orange"
-          boldText="39"
+          boldText={totalXp}
           grayText="Total XP"
           onPress={() => handleButtonPress("flash-outline", "You' ve earned 39 XP!", "Do more leassons to earn more XP!","orange","I've earned 39 XP points")}
         />

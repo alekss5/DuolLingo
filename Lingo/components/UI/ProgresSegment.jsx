@@ -10,6 +10,7 @@ export default function ProgresSegment({
   score,
   second,
   additionsalSymbol,
+  dealay,
 }) {
   const [animateToNumber, setAnimateToNumber] = useState(0);
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function ProgresSegment({
       } else {
         setAnimateToNumber(animateToNumber + score);
       }
-    }, 350);
+    }, dealay);
   }, []);
 
   return (
@@ -37,9 +38,9 @@ export default function ProgresSegment({
             includeComma
             animateToNumber={animateToNumber}
             fontStyle={{
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: "600",
-              padding: 4,
+              paddingTop: 3,
               color: `${color}`,
             }}
           />
@@ -49,9 +50,9 @@ export default function ProgresSegment({
             includeComma
             animateToNumber={score}
             fontStyle={{
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: "600",
-              padding: 4,
+              paddingTop: 3,
               color: `${color}`,
             }}
           />
@@ -66,9 +67,9 @@ export default function ProgresSegment({
             includeComma
             animateToNumber={animateToNumber}
             fontStyle={{
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: "600",
-              padding: 4,
+              paddingTop: 3,
               color: `${color}`,
             }}
           />

@@ -23,17 +23,17 @@ export default function StackNavigation() {
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,gestureEnabled: false }}
         />
         <Stack.Screen
           name="PlayScreen"
           component={PlayScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,gestureEnabled: false }}
         />
         <Stack.Screen
           name="FinishScreen"
           component={FinishScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,gestureEnabled: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

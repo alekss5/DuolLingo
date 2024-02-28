@@ -6,13 +6,18 @@ import { GlobalStyles } from "../constants/Colors";
 import { useEffect, useState,useCallback } from "react";
 import PlayScreenChoseList from "../components/PlayPage/PlayScreenChoseList";
 import ContinueButtonVew from "../components/PlayPage/ContinueButtonVew";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Timer from "../utils/Timer";
-
+import { selectLessons } from "../redux/lessonReducer";
+import { selectHearts } from "../redux/userReducer";
+import { decreceHearts } from "../redux/userReducer";
 export default function PlayScreen() {
-  const lessons = useSelector((state) => state.lesson.lessons);
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
+  const lessons = useSelector(selectLessons);
+  const hearts = useSelector(selectHearts);
+ 
   const [elapsedTime,setElapsedTime] = useState(0);
   const [pressedCard, setPressedCard] = useState(null);
   const [currentLessonIndex, setcurrentLessonIndex] = useState(0);
@@ -46,12 +51,13 @@ export default function PlayScreen() {
       if(isAnswerCorrect === true){
         setTotalCorrectAnswers((countAnswers)=>countAnswers+1)
       }
+      else {
+        dispatch(decreceHearts())
+      }
 
       if (currentLessonIndex+1 >= lessons.length) {
         setElapsedTime(elapsedTime=>elapsedTime+1000)
         const totalQuestionsCount = lessons.length;
-     
-
         navigation.navigate("FinishScreen",{elapsedTime,totalCorrectAnswers,totalQuestionsCount});
       }
     }
@@ -85,7 +91,7 @@ export default function PlayScreen() {
           </View>
           <View style={styles.rowContainer}>
             <MaterialCommunityIcons name="heart" size={30} color="red" />
-            <Text style={styles.heartText}> 5</Text>
+            <Text style={styles.heartText}> {hearts}</Text>
           </View>
         </View>
         <Text style={styles.headerText}>Select the correct answer</Text>

@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import lessonReducer from "./lessonReducer";
 import userReducer from "./userReducer";
 import progressReducer from "./progressReducer";
+import homePathReducer from "./homePathReducer";
+
 import {
   persistStore,
   persistReducer,
@@ -27,7 +29,8 @@ const rootReducer = combineReducers({
 
     user:userReducer,
     progress: progressReducer,
-    lesson: lessonReducer
+    homeData:homePathReducer,
+    lessons: lessonReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

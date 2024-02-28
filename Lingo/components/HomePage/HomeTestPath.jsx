@@ -2,31 +2,39 @@ import React from "react";
 import {
   ScrollView,
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Vibration,
+  Text
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../../constants/Colors";
+import { selectHomePathData, selectLastLessonId } from "../../redux/homePathReducer";
+import { useSelector } from "react-redux";
 
 export default function HomeTestPath() {
-  const numIcons = 17;
-  const deviation = 13;
   const navigation = useNavigation();
 
-  const renderIcons = () => {
-    const icons = [];
-    for (let i = 0; i < numIcons; i++) {
-      const angle = i * (360 / numIcons);
-      const radius = deviation * i;
+  const numIcons = 20;
+  const deviation = 7;
+
+  const homePathData = useSelector(selectHomePathData)
+  //const lastLessonId = useSelector(selectLastLessonId)
+  
+const renderIcons = () => {
+  const icons = [];
+  homePathData.forEach((item, index) => {
+    const { lessonId } = item;
+    for (let i = 0; i < lessonId.length; i++) {
+      const angle = (index * (360 / numIcons)) + (i * (360 / lessonId.length));
+      const radius = deviation * index;
 
       const translateX = radius * Math.cos((angle * Math.PI) / 180);
       const translateY = radius * Math.sin((angle * Math.PI) / 180);
 
       icons.push(
-        <TouchableOpacity key={i} onPress={() => navigateToDetails(i)}>
+        <TouchableOpacity key={lessonId[i]} onPress={() => navigateToDetails(lessonId[i])}>
           <MaterialCommunityIcons
             name="star-circle-outline"
             size={80}
@@ -35,20 +43,26 @@ export default function HomeTestPath() {
               styles.icons,
               {
                 padding: 20,
-                transform: [{ translateX: translateX }, { translateY: 1 }],
+                transform: [{ translateX: translateX }, { translateY: translateY }],
               },
             ]}
           />
         </TouchableOpacity>
       );
+      if((i+1) ===lessonId.length) {
+     
+        icons.push(<Text>sdf</Text>)
+      }
     }
-    return icons;
-  };
+  });
+  return icons;
+};
 
-  const navigateToDetails = (iconIndex) => {
+  const navigateToDetails = (id) => {
     Vibration.vibrate(3);
-    navigation.navigate("PlayScreen", { iconIndex });
-    // navigation.navigate('FinishScreen', { iconIndex });
+    console.log(id)
+    navigation.navigate("PlayScreen", { id });
+
   };
 
   return (
