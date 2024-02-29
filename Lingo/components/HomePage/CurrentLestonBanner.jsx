@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View, Platform } from "react-native";
 import React from "react";
 import { GlobalStyles } from "../../constants/Colors";
+import { selectSectionName, selectSectionNumber, selectUnitNumber } from "../../redux/homePathReducer";
+import { useSelector } from "react-redux";
 
 export default function CurrentLessonBanner() {
+  const sectionNumber = useSelector(selectSectionNumber)
+  const sectionText = useSelector(selectSectionName)
+  const unitNumber = useSelector(selectUnitNumber)
   return (
     <View style={styles.container}>
-      <Text style={styles.section}>Section 1, Unit 1</Text>
-      <Text style={styles.title}>Order in a cafe </Text>
+      <Text style={styles.section}>Section {sectionNumber}, Unit {unitNumber}</Text>
+      <Text style={styles.title}>{sectionText}</Text>
     </View>
   );
 }

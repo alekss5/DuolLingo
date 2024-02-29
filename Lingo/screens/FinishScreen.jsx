@@ -7,7 +7,6 @@ import Animation from '../Images/Animation.json';
 import { formatTimeFromMStoMin } from '../utils/globalFunctions';
 
 export default function FinishScreen({ navigation, route }) {
- 
   const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } = route.params;
   const { minutes, seconds } = formatTimeFromMStoMin(elapsedTime);
 

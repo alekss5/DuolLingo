@@ -1,72 +1,161 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ScrollView,
   StyleSheet,
   View,
   TouchableOpacity,
   Vibration,
-  Text
+  Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../../constants/Colors";
-import { selectHomePathData, selectLastLessonId } from "../../redux/homePathReducer";
-import { useSelector } from "react-redux";
+import {
+  increaseUnitNumber,
+  selectHomePathData,
+  selectLastLessonId,
+  setSectionInformation,
+} from "../../redux/homePathReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "react-native-paper";
 
 export default function HomeTestPath() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [allSectionNames, setAllSectionNames] = useState();
+  const [dividerPositions, setDividerPositions] = useState([]);
+  const scrollViewRef = useRef(null);
 
-  const numIcons = 20;
   const deviation = 7;
 
-  const homePathData = useSelector(selectHomePathData)
-  //const lastLessonId = useSelector(selectLastLessonId)
-  
-const renderIcons = () => {
-  const icons = [];
-  homePathData.forEach((item, index) => {
-    const { lessonId } = item;
-    for (let i = 0; i < lessonId.length; i++) {
-      const angle = (index * (360 / numIcons)) + (i * (360 / lessonId.length));
-      const radius = deviation * index;
+  const homePathData = useSelector(selectHomePathData);
+  useEffect(() => {
+    const sectionNames = homePathData.map((item) => item.sectionName);
+    
 
-      const translateX = radius * Math.cos((angle * Math.PI) / 180);
-      const translateY = radius * Math.sin((angle * Math.PI) / 180);
+    dispatch(
+      setSectionInformation({
+        sectionName: sectionNames[0],
+        sectionNumber: homePathData[0].sectionNumber,
+        unitNumber: homePathData[0].sectionUnitNumber,
+      })
+    );
+    setAllSectionNames(sectionNames);
 
-      icons.push(
-        <TouchableOpacity key={lessonId[i]} onPress={() => navigateToDetails(lessonId[i])}>
-          <MaterialCommunityIcons
-            name="star-circle-outline"
-            size={80}
-            color={GlobalStyles.colors.succesGreen}
-            style={[
-              styles.icons,
-              {
-                padding: 20,
-                transform: [{ translateX: translateX }, { translateY: translateY }],
-              },
-            ]}
-          />
-        </TouchableOpacity>
-      );
-      if((i+1) ===lessonId.length) {
-     
-        icons.push(<Text>sdf</Text>)
+    console.log(sectionNames);
+  }, [homePathData]);
+
+  const renderIcons = () => {
+    const icons = [];
+    homePathData.forEach((item, index) => {
+      const { lessonId, sectionName } = item;
+      // setSectionName(item.sectionName)
+
+      for (let i = 0; i < lessonId.length; i++) {
+        const angle = index * (360 / 18) + i * (360 / 18);
+        const radius = deviation * index;
+
+        const translateX = radius * Math.cos((angle * Math.PI) / 180);
+        const translateY = radius * Math.sin((angle * Math.PI) / 180);
+
+        icons.push(
+          <TouchableOpacity
+            key={lessonId[i]}
+            onPress={() => navigateToDetails(lessonId[i])}
+          >
+            <MaterialCommunityIcons
+              name="star-circle-outline"
+              size={80}
+              color={GlobalStyles.colors.succesGreen}
+              style={[
+                styles.icons,
+                {
+                  padding: 20,
+                  transform: [{ translateX: translateX }, { translateY: 10 }],
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        );
+        if (i + 1 === lessonId.length) {
+          const indexd = index + 1;
+          icons.push(
+            <Divider
+              key={`divider-${index}`}
+              style={styles.divider}
+              onLayout={(event) => handleDividerLayout(event, index)}
+            />
+          );
+          icons.push(
+            <Text key={`divider-text-${index}`} style={styles.dividerText}>
+              {homePathData[indexd]?.sectionName}
+            </Text>
+          );
+        }
       }
-    }
-  });
-  return icons;
-};
+    });
+    return icons;
+  };
 
   const navigateToDetails = (id) => {
     Vibration.vibrate(3);
-    console.log(id)
     navigation.navigate("PlayScreen", { id });
-
   };
 
+  const handleDividerLayout = (event, index) => {
+    const { y } = event.nativeEvent.layout;
+    setDividerPositions((prevPositions) => [
+      ...prevPositions,
+      { index, position: y },
+    ]);
+  };
+  
+  let i=0
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    //console.log(Math.round(offsetY))
+    //console.log(Math.round(dividerPositions[i].position))
+    console.log(dividerPositions)
+    
+    if(Math.round(dividerPositions[i].position)===Math.round(offsetY)){
+
+      dispatch(increaseUnitNumber());
+      i++;
+    }
+    // const visibleDividers = dividerPositions.filter(
+    //   (divider) => divider.position > offsetY
+    // );
+    
+  
+    // if (visibleDividers.length > 0) {
+    //   const firstVisibleDivider = visibleDividers[0];
+    //   const distanceFromTop = firstVisibleDivider.position - offsetY;
+  
+    //   // console.log(
+    //   //   "First visible divider index:",
+    //   //   firstVisibleDivider.index,
+    //   //   "position:",
+    //   //   firstVisibleDivider.position
+    //   // );
+  
+    //   // Check if the first visible divider is within 15 pixels from the top of the screen
+    //   // if (distanceFromTop <= 15) {
+    //   //   // Increase the unit number
+    //   //   dispatch(increaseUnitNumber());
+    //   // }
+    // }
+  };
+  
+  
+  
+
+
   return (
-    <ScrollView>
+    <ScrollView
+      ref={scrollViewRef}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
       <View style={styles.container}>{renderIcons()}</View>
     </ScrollView>
   );
@@ -74,6 +163,18 @@ const renderIcons = () => {
 
 const styles = StyleSheet.create({
   icons: {},
+  divider: {
+    height: 2,
+    width: "95%",
+  },
+  dividerText: {
+    marginTop: 10,
+    fontSize: 22,
+    fontWeight: "400",
+    color: "gray",
+    width: 300,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",

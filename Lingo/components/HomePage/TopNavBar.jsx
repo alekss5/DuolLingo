@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useSelector } from "react-redux";
 import {
- 
   selectCurrentCourse,
   selectHearts,
   selectPoints,

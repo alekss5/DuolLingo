@@ -49,10 +49,19 @@ export default function HomeScreen() {
     lessonsCount:3,
     lessonId:[6,7,8]
   },
+  {    
+    sectionNumber:1, 
+    sectionUnitNumber:3, 
+    sectionName:"Order in a Burgersdfa sdfasdfg asdfgs asdfasdf asdfasdf",
+    lessonsCount:6,
+    lessonId:[9,10,11,12,13,14]
+  },
 ]
 const lastLesson = 1
 dispatch(setHomePathData(homePathData));
-dispatch(setLastLessonId(lastLesson))
+dispatch(setLastLessonId(lastLesson));
+
+
 
   return (
     <SafeAreaView style={styles.container}>
