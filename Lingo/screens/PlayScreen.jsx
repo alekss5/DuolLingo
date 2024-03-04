@@ -27,6 +27,8 @@ export default function PlayScreen() {
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [countButtonPressed, setCountIsButtonPressed] = useState(0);
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+
+  const [isAnswersRowVisible, setIsAnswerRowVisible] = useState(false);
   const [answeredInARow, setAnswersInARow] = useState(0);
 
   const translateYAnim = useRef(new Animated.Value(-15)).current;
@@ -48,6 +50,7 @@ export default function PlayScreen() {
   useEffect(() => {
     if(countButtonPressed === 1) {
       if(isAnswerCorrect){
+        setIsAnswerRowVisible(true)
         setAnswersInARow((prev) => prev + 1);
       }
       else{
@@ -56,6 +59,7 @@ export default function PlayScreen() {
     }
   
     if (countButtonPressed === 2) {
+      setIsAnswerRowVisible(false);
       setcurrentLessonIndex(currentLessonIndex + 1);
       setPressedCard(null);
       setCountIsButtonPressed(0);
@@ -114,7 +118,8 @@ export default function PlayScreen() {
             onPress={goBack}
           />
           <View style={styles.progressBarContainer}>
-            {answeredInARow >= 2 && (
+          
+            {answeredInARow >= 2 && isAnswersRowVisible && (
               <Animated.View
                 style={[
                   styles.answersRowContainer,
@@ -124,6 +129,7 @@ export default function PlayScreen() {
                 <Text style={styles.answersRowText}>{answeredInARow} IN A ROW</Text>
               </Animated.View>
             )}
+          
             <ProgressBar
               progress={currentLessonIndex / lessons.length}
               color="#41980a"
