@@ -24,14 +24,15 @@ export default function HomeTestPath() {
   const dispatch = useDispatch();
   const [allSectionNames, setAllSectionNames] = useState();
   const [dividerPositions, setDividerPositions] = useState([]);
+
   const scrollViewRef = useRef(null);
 
   const deviation = 7;
 
   const homePathData = useSelector(selectHomePathData);
+
   useEffect(() => {
     const sectionNames = homePathData.map((item) => item.sectionName);
-    
 
     dispatch(
       setSectionInformation({
@@ -41,8 +42,6 @@ export default function HomeTestPath() {
       })
     );
     setAllSectionNames(sectionNames);
-
-    console.log(sectionNames);
   }, [homePathData]);
 
   const renderIcons = () => {
@@ -60,21 +59,41 @@ export default function HomeTestPath() {
 
         icons.push(
           <TouchableOpacity
-            key={lessonId[i]}
-            onPress={() => navigateToDetails(lessonId[i])}
+            key={lessonId[i].id}
+            onPress={() => navigateToDetails(lessonId[i].id)}
+            disabled={lessonId[i].index === 0}
           >
-            <MaterialCommunityIcons
-              name="star-circle-outline"
-              size={80}
-              color={GlobalStyles.colors.succesGreen}
-              style={[
-                styles.icons,
-                {
-                  padding: 20,
-                  transform: [{ translateX: translateX }, { translateY: 10 }],
-                },
-              ]}
-            />
+            {lessonId[i].index === 5 ? (
+              <MaterialCommunityIcons
+                name="check-circle-outline"
+                size={80}
+                color={GlobalStyles.colors.succesGreen}
+                style={[
+                  styles.icons,
+                  {
+                    padding: 20,
+                    transform: [{ translateX: translateX }, { translateY: 10 }],
+                  },
+                ]}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="star-circle-outline"
+                size={80}
+                color={
+                  lessonId[i].index === 0
+                    ? "grey"
+                    : GlobalStyles.colors.succesGreen
+                }
+                style={[
+                  styles.icons,
+                  {
+                    padding: 20,
+                    transform: [{ translateX: translateX }, { translateY: 10 }],
+                  },
+                ]}
+              />
+            )}
           </TouchableOpacity>
         );
         if (i + 1 === lessonId.length) {
@@ -99,6 +118,7 @@ export default function HomeTestPath() {
 
   const navigateToDetails = (id) => {
     Vibration.vibrate(3);
+    //console.log(id)
     navigation.navigate("PlayScreen", { id });
   };
 
@@ -109,35 +129,33 @@ export default function HomeTestPath() {
       { index, position: y },
     ]);
   };
-  
-  let i=0
+
+  let i = 0;
   const handleScroll = (event) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     //console.log(Math.round(offsetY))
     //console.log(Math.round(dividerPositions[i].position))
-    console.log(dividerPositions)
-    
-    if(Math.round(dividerPositions[i].position)===Math.round(offsetY)){
+    console.log(dividerPositions);
 
+    if (Math.round(dividerPositions[i].position) === Math.round(offsetY)) {
       dispatch(increaseUnitNumber());
       i++;
     }
     // const visibleDividers = dividerPositions.filter(
     //   (divider) => divider.position > offsetY
     // );
-    
-  
+
     // if (visibleDividers.length > 0) {
     //   const firstVisibleDivider = visibleDividers[0];
     //   const distanceFromTop = firstVisibleDivider.position - offsetY;
-  
+
     //   // console.log(
     //   //   "First visible divider index:",
     //   //   firstVisibleDivider.index,
     //   //   "position:",
     //   //   firstVisibleDivider.position
     //   // );
-  
+
     //   // Check if the first visible divider is within 15 pixels from the top of the screen
     //   // if (distanceFromTop <= 15) {
     //   //   // Increase the unit number
@@ -145,10 +163,6 @@ export default function HomeTestPath() {
     //   // }
     // }
   };
-  
-  
-  
-
 
   return (
     <ScrollView

@@ -1,9 +1,9 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { SafeAreaView, StyleSheet, Text, View, Animated } from "react-native";
 import { ProgressBar, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../constants/Colors";
-import { useEffect, useState,useCallback } from "react";
 import PlayScreenChoseList from "../components/PlayPage/PlayScreenChoseList";
 import ContinueButtonVew from "../components/PlayPage/ContinueButtonVew";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,69 +11,100 @@ import Timer from "../utils/Timer";
 import { selectLessons } from "../redux/lessonReducer";
 import { selectHearts } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
+import CustomModal from "../components/UI/CustomModal";
+
 export default function PlayScreen() {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const lessons = useSelector(selectLessons);
   const hearts = useSelector(selectHearts);
- 
-  const [elapsedTime,setElapsedTime] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [elapsedTime, setElapsedTime] = useState(0);
   const [pressedCard, setPressedCard] = useState(null);
   const [currentLessonIndex, setcurrentLessonIndex] = useState(0);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [countButtonPressed, setCountIsButtonPressed] = useState(0);
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
-  
+  const [answeredInARow, setAnswersInARow] = useState(0);
+
+  const translateYAnim = useRef(new Animated.Value(-15)).current;
 
   function goBack() {
-    navigation.goBack();
+    setModalOpen(true);
+    //navigation.goBack();
   }
+
   function playWord() {}
 
-  const handleCardPress = useCallback((card) => {
+  const handleCardPress = (card) => {
     if (countButtonPressed < 1) {
       setPressedCard(card);
-      if (card === lessons[currentLessonIndex].word) {
-        setIsAnswerCorrect(true);
-      } else {
-        setIsAnswerCorrect(false);
-      }
+      setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
     }
-  }, [countButtonPressed, currentLessonIndex, lessons]);
+  };
 
   useEffect(() => {
-    if (countButtonPressed === 2) {
+    if(countButtonPressed === 1) {
+      if(isAnswerCorrect){
+        setAnswersInARow((prev) => prev + 1);
+      }
+      else{
+        setAnswersInARow(0);
+      }
+    }
   
+    if (countButtonPressed === 2) {
       setcurrentLessonIndex(currentLessonIndex + 1);
       setPressedCard(null);
       setCountIsButtonPressed(0);
-      if(isAnswerCorrect === true){
-        setTotalCorrectAnswers((countAnswers)=>countAnswers+1)
-      }
-      else {
-        dispatch(decreceHearts())
+
+      if (isAnswerCorrect) {
+       
+        setTotalCorrectAnswers((countAnswers) => countAnswers + 1);
+        
+      } else {
+
+        dispatch(decreceHearts());
       }
 
-      if (currentLessonIndex+1 >= lessons.length) {
-        setElapsedTime(elapsedTime=>elapsedTime+1000)
+      if (currentLessonIndex + 1 >= lessons.length) {
+        setElapsedTime((elapsedTime) => elapsedTime + 1000);
         const totalQuestionsCount = lessons.length;
-        navigation.navigate("FinishScreen",{elapsedTime,totalCorrectAnswers,totalQuestionsCount});
+        navigation.navigate("FinishScreen", {
+          elapsedTime,
+          totalCorrectAnswers,
+          totalQuestionsCount,
+        });
       }
     }
-  }, [countButtonPressed,isAnswerCorrect]);
+  }, [countButtonPressed, isAnswerCorrect]);
+
+  useEffect(() => {
+    if (answeredInARow >= 2) {
+      Animated.timing(translateYAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [answeredInARow, translateYAnim]);
 
   const handleContinuePress = () => {
     setCountIsButtonPressed(countButtonPressed + 1);
   };
+
   const handleTimerUpdate = (timeElapsed) => {
     setElapsedTime(timeElapsed);
   };
 
+  const closeModal = () => setModalOpen(false);
+
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView>
-      <Timer onUpdate={handleTimerUpdate} style={styles.invisible}/>
+        <Timer onUpdate={handleTimerUpdate} style={styles.invisible} />
         <View style={styles.container}>
           <IconButton
             icon="close"
@@ -83,6 +114,16 @@ export default function PlayScreen() {
             onPress={goBack}
           />
           <View style={styles.progressBarContainer}>
+            {answeredInARow >= 2 && (
+              <Animated.View
+                style={[
+                  styles.answersRowContainer,
+                  { transform: [{ translateY: translateYAnim }] },
+                ]}
+              >
+                <Text style={styles.answersRowText}>{answeredInARow} IN A ROW</Text>
+              </Animated.View>
+            )}
             <ProgressBar
               progress={currentLessonIndex / lessons.length}
               color="#41980a"
@@ -103,9 +144,7 @@ export default function PlayScreen() {
             size={26}
             onPress={() => playWord(lessons[currentLessonIndex]?.word)}
           />
-          <Text style={styles.playWord}>
-            {lessons[currentLessonIndex]?.word}
-          </Text>
+          <Text style={styles.playWord}>{lessons[currentLessonIndex]?.word}</Text>
         </View>
 
         <PlayScreenChoseList
@@ -121,6 +160,11 @@ export default function PlayScreen() {
           "React Native | A framework for building native apps using React"
         }
         onContinuePress={handleContinuePress}
+      />
+      <CustomModal
+        modalVisible={modalOpen}
+        setModalVisible={closeModal}
+        pressedStatisticInfo={{icon:"emoticon-dead",boldText:"Wait, don't go",grayText:"You're right on track! If you quit now, you'll lose your progress.",color:'#59cc00',mainButtonText:"Keep Learning"}}
       />
     </View>
   );
@@ -146,13 +190,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: "10%",
   },
-
   progressBarContainer: {
     width: "70%",
   },
   progressBar: {
     height: 16,
     borderRadius: 10,
+  },
+  answersRowContainer: {
+    marginLeft: 10,
+    marginBottom: 4,
+  },
+  answersRowText: {
+    color:GlobalStyles.colors.accentOrange,
+    fontWeight: "500",
+    fontSize: 16,
   },
   lessonContainer: {},
   rowContainer: {
@@ -172,8 +224,7 @@ const styles = StyleSheet.create({
   volumeButton: {
     backgroundColor: GlobalStyles.colors.blue,
   },
-  invisible:{
+  invisible: {
     display: "none",
-
-  }
+  },
 });

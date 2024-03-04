@@ -11,8 +11,8 @@ export default function Statistics() {
   const [modalOpen, setModalOpen] = useState(false);
   const [pressedStatisticInfo, setPressedStatisticInfo] = useState();
 
-  function handleButtonPress(icon, boldText, grayText,color,shareText) {
-    setPressedStatisticInfo({ icon, boldText, grayText,color,shareText });
+  function handleButtonPress(icon, boldText, grayText,color,shareText,mainButtonText) {
+    setPressedStatisticInfo({ icon, boldText, grayText,color,shareText,mainButtonText });
     setModalOpen(true);
   }
 
@@ -27,14 +27,14 @@ export default function Statistics() {
           iconColor="red"
           boldText={steak}
           grayText="Day streak"
-          onPress={() => handleButtonPress("fire", "You' ve earned 0 Day Steak", "Play every day to keep your day streak!",'red',"I've earned 0 Day Steak")}
+          onPress={() => handleButtonPress("fire", "You' ve earned 0 Day Steak", "Play every day to keep your day streak!",'red',"I've earned 0 Day Steak","Share")}
         />
         <StatisticsButton
           icon="flash-outline"
           iconColor="orange"
           boldText={totalXp}
           grayText="Total XP"
-          onPress={() => handleButtonPress("flash-outline", "You' ve earned 39 XP!", "Do more leassons to earn more XP!","orange","I've earned 39 XP points")}
+          onPress={() => handleButtonPress("flash-outline", "You' ve earned 39 XP!", "Do more leassons to earn more XP!","orange","I've earned 39 XP points","Share")}
         />
       </View>
       <View style={styles.buttonRow}>
@@ -43,14 +43,14 @@ export default function Statistics() {
           iconColor="orange"
           boldText="No current"
           grayText="Current League"
-          onPress={() => handleButtonPress("key", "No current", "Current League",'orange')}
+          onPress={() => handleButtonPress("key", "No current", "Current League",'orange',"","Share")}
         />
         <StatisticsButton
           icon="star-four-points-outline"
           iconColor="orange"
           boldText="0"
           grayText="Top 3 finishes"
-          onPress={() => handleButtonPress("star-four-points-outline", "0", "Top 3 finishes",'orange')}
+          onPress={() => handleButtonPress("star-four-points-outline", "0", "Top 3 finishes",'orange',"","Share")}
         />
       </View>
       <CustomModal
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-
     marginBottom: "40%",
   },
   title: {

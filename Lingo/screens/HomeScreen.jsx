@@ -40,26 +40,27 @@ export default function HomeScreen() {
     sectionUnitNumber:1, 
     sectionName:"Order in a Cafe",
     lessonsCount:5,
-    lessonId:[1,2,3,4,5]
-  },
+    lessonId:[{id:1,index:5},{id:2,index:5}]
+   }
+  ,
   {    
     sectionNumber:1, 
     sectionUnitNumber:2, 
     sectionName:"Order in a Restaurant",
     lessonsCount:3,
-    lessonId:[6,7,8]
+    lessonId:[{id:3,index:3},{id:4,index:0},{id:5,index:0}]
   },
-  {    
-    sectionNumber:1, 
-    sectionUnitNumber:3, 
-    sectionName:"Order in a Burgersdfa sdfasdfg asdfgs asdfasdf asdfasdf",
-    lessonsCount:6,
-    lessonId:[9,10,11,12,13,14]
-  },
+  // {    
+  //   sectionNumber:1, 
+  //   sectionUnitNumber:3, 
+  //   sectionName:"Order in a Burgersdfa sdfasdfg asdfgs asdfasdf asdfasdf",
+  //   lessonsCount:6,
+  //   lessonId:[9,10,11,12,13,14]
+  // },
 ]
-const lastLesson = 1
+//const lastLesson = 3
 dispatch(setHomePathData(homePathData));
-dispatch(setLastLessonId(lastLesson));
+//dispatch(setLastLessonId(lastLesson));
 
 
 

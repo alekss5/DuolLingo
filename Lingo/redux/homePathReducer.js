@@ -7,16 +7,16 @@ const homePathDataSlice = createSlice({
     sectionNumber:1,
     unitNumber:1,
     sectionName:null,
-    lastLessonId:null,
+   // lastLessonId:null,
   },
   reducers: {
     setHomePathData: (state, action) => {
       state.homePathData = action.payload;
     },
-    setLastLessonId: (state, action) => {
+    // setLastLessonId: (state, action) => {
 
-      state.lastLessonId = action.payload;
-    },
+    //   state.lastLessonId = action.payload;
+    // },
     setSectionInformation: (state, action) => {
       state.sectionName = action.payload.sectionName;
       state.sectionNumber = action.payload.sectionNumber;
@@ -33,7 +33,7 @@ const homePathDataSlice = createSlice({
 });
 
 export const selectHomePathData = (state) => state.homeData.homePathData;
-export const selectLastLessonId = (state) => state.homeData.lastLessonId;
+//export const selectLastLessonId = (state) => state.homeData.lastLessonId;
 export const selectSectionNumber = (state) =>state.homeData.sectionNumber;
 export const selectUnitNumber = (state) =>state.homeData.unitNumber;
 export const selectSectionName = (state) =>state.homeData.sectionName;

@@ -5,13 +5,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { GlobalStyles } from "../../constants/Colors";
 import { shareContent } from "../../utils/share";
+import { useNavigation } from "@react-navigation/native";
 export default function CustomModal({
   modalVisible,
   setModalVisible,
   pressedStatisticInfo,
 }) {
-  const { icon, boldText, grayText, color, shareText } =
+  const { icon, boldText, grayText, color, shareText, mainButtonText } =
     pressedStatisticInfo || {};
+  const navigate = useNavigation();
 
   return (
     <Modal
@@ -23,11 +25,7 @@ export default function CustomModal({
       }}
       style={styles.modal}
     >
-      <BlurView
-        style={styles.absolute}
-        intensity={10} // Adjust the intensity based on your preference
-        tint="light" // Adjust the tint based on your preference
-      />
+      <BlurView style={styles.absolute} intensity={10} tint="light" />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <MaterialCommunityIcons name={icon} size={140} color={color} />
@@ -37,16 +35,33 @@ export default function CustomModal({
           <Button
             mode="outlined"
             textColor={GlobalStyles.colors.black}
-            buttonColor={GlobalStyles.colors.accentOrange}
-            onPress={() => shareContent(shareText)}
+            buttonColor={
+              mainButtonText === "Share"
+                ? GlobalStyles.colors.accentOrange
+                : GlobalStyles.colors.blue
+            }
+            onPress={() => {
+              if (mainButtonText === "Share") {
+                shareContent(shareText);
+              } else {
+                setModalVisible(false);
+              }
+            }}
             style={styles.button}
           >
-            Share
+            {mainButtonText}
           </Button>
           <Button
             mode="text"
             textColor={GlobalStyles.colors.accentOrange}
-            onPress={() => setModalVisible(false)}
+            onPress={() => {
+              if (mainButtonText === "Share") {
+                setModalVisible(false);
+              } else {
+                setModalVisible(false);
+                navigate.goBack();
+              }
+            }}
             style={styles.button}
           >
             Dismis
@@ -108,9 +123,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   grayText: {
+    textAlign: "center",
     color: GlobalStyles.colors.gray,
     fontSize: 18,
     paddingBottom: "10%",
   },
-  
 });
