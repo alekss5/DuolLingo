@@ -5,7 +5,6 @@ import { GlobalStyles } from "../../constants/Colors";
 
 import { Button, IconButton, Divider } from "react-native-paper";
 import { shareContent } from "../../utils/share";
-import AddFrensModal from "./AddFrendsModal";
 import {
   selectUserName,
   selectName,
@@ -13,8 +12,10 @@ import {
   selectJoinedDate,
 } from "../../redux/userReducer";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileInformation() {
+  const navigate = useNavigation()
   const name = useSelector(selectName)
   const userName = useSelector(selectUserName);
   const joinedDate = new Date(useSelector(selectJoinedDate));
@@ -22,16 +23,17 @@ export default function ProfileInformation() {
   const joinedMonth = joinedDate.toLocaleString('default',{month:'long'})
   const joinedYear = joinedDate.getFullYear()
 
-  const [modalOpen, setModalOpen] = useState(false);
+
   const onShare = () => {
     const message =
       "React Native | A framework for building native apps using React";
     shareContent(message);
   };
-  const closeModal = () => setModalOpen(false);
+
 
   function addFrensModal() {
-    setModalOpen(true);
+    navigate.navigate("addFrendModal")
+
   }
 
   return (
@@ -69,8 +71,6 @@ export default function ProfileInformation() {
         />
       </View>
       <Divider style={{ height: 1.5 }} />
-
-      <AddFrensModal modalVisible={modalOpen} setModalVisible={closeModal} />
     </View>
   );
 }

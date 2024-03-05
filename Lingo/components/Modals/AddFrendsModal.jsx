@@ -1,32 +1,47 @@
-import { StyleSheet, Text, View, Modal } from "react-native";
+import { useState,useCallback } from 'react';
+import { StyleSheet, Text, View, Modal, SafeAreaView } from "react-native";
 import { Divider, IconButton, Searchbar } from "react-native-paper";
 import { GlobalStyles } from "../../constants/Colors";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-export default function AddFrendsModal({ modalVisible, setModalVisible }) {
+export default function AddFrendsModal() {
+  const navigation = useNavigation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsModalVisible(true);
+      return () => {
+        setIsModalVisible(false);
+      };
+    }, [])
+  );
+
+  const closeModal = () => {
+    navigation.goBack();
+  };
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(false);
-      }}
+      visible={isModalVisible}
+      onRequestClose={closeModal}
     >
-      <View style={styles.modalView}>
+      <SafeAreaView style={styles.modalView}>
         <View style={styles.rowContainer}>
           <IconButton
             icon="close"
-            //   mode="outlined"
             iconColor={GlobalStyles.colors.gray}
             style={styles.closeButton}
             size={26}
-            onPress={() => setModalVisible(false)}
+            onPress={closeModal}
           />
           <Text style={styles.modalText}>Search for friends</Text>
         </View>
         <Searchbar placeholder="Name or username" style={styles.searchBar} />
         <Divider style={{ height: 1.5 }} />
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }
@@ -34,17 +49,14 @@ export default function AddFrendsModal({ modalVisible, setModalVisible }) {
 const styles = StyleSheet.create({
   searchBar: {
     borderRadius: 7,
-
     borderColor: "black",
     backgroundColor: "transparent",
     width: "90%",
     height: 50,
   },
-
   modalView: {
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
     alignItems: "center",
     width: "100%",
     height: "100%",
@@ -59,7 +71,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   closeButton: {},
-
   modalText: {
     flex: 1,
     padding: 7,
@@ -69,7 +80,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
   },
-
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
