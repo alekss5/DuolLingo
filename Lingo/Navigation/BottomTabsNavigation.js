@@ -7,6 +7,7 @@ import { Vibration } from "react-native";
 import { GlobalStyles } from "../constants/Colors";
 import IconButton from "../components/UI/IconButton";
 import FeedScreen from "../screens/FeedScreen";
+import LeaderboardScreen from "../screens/LeaderboardScreen";
 
 const BottomTabs = createBottomTabNavigator();
 export default function BottomTabsNavigation() {
@@ -62,7 +63,7 @@ export default function BottomTabsNavigation() {
       />
       <BottomTabs.Screen
         name="LeaderBoard"
-        component={FeedScreen}
+        component={LeaderboardScreen}
         options={{
           title: "LeaderBoard",
           tabBarLabel: "Leaderboard",
