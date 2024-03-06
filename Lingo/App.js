@@ -8,12 +8,17 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
 import StackNavigation from "./Navigation/StackNavigation";
+
 const BottomTabs = createBottomTabNavigator();
 
 export default function App() {
+  
+ 
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+
         <StatusBar style="dark" />
         <StackNavigation />
       </PersistGate>
