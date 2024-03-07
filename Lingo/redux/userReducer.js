@@ -12,6 +12,7 @@ const initialState = {
   courses: [],
   currentCourse: null,
   totalXp: null,
+  todayWinSteak: null
 };
 
 const userSlice = createSlice({
@@ -29,6 +30,7 @@ const userSlice = createSlice({
         courses,
         currentCourse,
         totalXp,
+        todayWinStak,
       } = action.payload;
       state.name = name;
       state.userName = userName;
@@ -40,6 +42,7 @@ const userSlice = createSlice({
       state.currentCourse = currentCourse;
       state.totalXp = totalXp;
       state.isAuthenticated = true;
+      state.todayWinStak = todayWinStak;
     },
     logoutUser: (state) => {
       Object.assign(state, initialState);
@@ -49,12 +52,27 @@ const userSlice = createSlice({
       if (state.hearts !== null && state.hearts > 0) {
         state.hearts -= 1;
       }
+    },
+    buyHearts: (state)=>{
+      if(state.hearts <5 && state.points>=500){
+        state.hearts = 5
+        state.points -= 500
+      }
+    },
+    finish:(state)=>{
+      state.points +=120
+      if(state.todayWinSteak===false){
+        state.todayWinSteak = true
+        state.daysStreak +=1
+      }
+   
     }
+
    
   },
 });
 
-export const { loginUser, logoutUser,decreceHearts } = userSlice.actions;
+export const { loginUser, logoutUser,decreceHearts,buyHearts,finish } = userSlice.actions;
 
 export const selectName = (state) => state.user.name;
 export const selectUserName = (state) => state.user.userName;

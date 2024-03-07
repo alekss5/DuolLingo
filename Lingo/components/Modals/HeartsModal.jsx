@@ -6,16 +6,18 @@ import {
   View,
   TouchableWithoutFeedback,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectHearts } from "../../redux/userReducer";
 import PointsIconText from "../UI/PointsIconText";
-
+import { buyHearts } from "../../redux/userReducer";
 export default function HeartsModal({ isModalOpen, closeModal }) {
   const slideAnim = useRef(new Animated.Value(-100)).current;
   const heartsCount = useSelector(selectHearts);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isModalOpen) {
@@ -61,6 +63,9 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
     return heartIcons;
   };
 
+  function buyHeartsHandler(){
+    dispatch(buyHearts())
+  }
   return (
     <Modal
       visible={isModalOpen}
@@ -93,7 +98,8 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
             {" "}
             Keep on learning
           </Text>
-          <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={buyHeartsHandler} disabled={heartsCount===5} style={styles.pressbleContainer}>
+          <View style={[styles.buttonContainer, heartsCount == 5 &&{backgroundColor:'gray'}]}>
             <MaterialCommunityIcons
               name="heart"
               size={20}
@@ -105,6 +111,8 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
             </Text>
             <PointsIconText value="500" />
           </View>
+          </TouchableOpacity>
+
           <View style={[styles.buttonContainer, { backgroundColor: "blue" }]}>
             <MaterialCommunityIcons
               name="heart-plus"
@@ -175,10 +183,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  pressbleContainer:{
+    minWidth:"90%"
+  },
   buttonContainer: {
     marginTop: 15,
-
-    width: "90%",
     padding: 10,
     flexDirection: "row",
     borderWidth: 2.5,

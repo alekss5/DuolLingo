@@ -1,13 +1,14 @@
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import IconButton from "../UI/IconButton";
 import { GlobalStyles } from "../../constants/Colors";
+import LottieView from "lottie-react-native";
 
+import avatarImage from '../../Images/avatarAnimation.json'
 export default function ProfileImage() {
   const navigation = useNavigation();
   function addProfilePicture() {}
@@ -23,10 +24,17 @@ export default function ProfileImage() {
       </View>
 
       <TouchableOpacity onPress={addProfilePicture} style={styles.pressable}>
-        <Image
+        {/* <Image
           source={require("../../Images/defaultUser.png")}
           style={styles.image}
+        /> */}
+        <LottieView
+          source={avatarImage}
+          autoPlay
+          loop={true}
+          style={styles.animation}
         />
+        
       </TouchableOpacity>
     </View>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal } from "react-native";
+import { StyleSheet, Text, View, Modal, SafeAreaView } from "react-native";
 import { BlurView } from "expo-blur";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
@@ -16,6 +16,7 @@ export default function CustomModal({
   const navigate = useNavigation();
 
   return (
+ 
     <Modal
       animationType="slide"
       transparent={true}
@@ -28,6 +29,7 @@ export default function CustomModal({
       <BlurView style={styles.absolute} intensity={10} tint="light" />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+        
           <MaterialCommunityIcons name={icon} size={140} color={color} />
           <Text style={styles.modalText}>{boldText}</Text>
           <Text style={styles.grayText}>{grayText}</Text>
@@ -66,9 +68,11 @@ export default function CustomModal({
           >
             Dismis
           </Button>
+    
         </View>
       </View>
     </Modal>
+  
   );
 }
 
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
     width: "100%",
-    height: "50%",
+    height: "52%",
     alignSelf: "flex-end",
     shadowColor: "#000",
     shadowOffset: {

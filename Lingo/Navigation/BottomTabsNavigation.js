@@ -15,27 +15,22 @@ export default function BottomTabsNavigation() {
   return (
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
-        tabBarBackgroundColor: GlobalStyles.colors.backgroundGreen,
-
-        // headerStyle: { backgroundColor: 'transparent' },
         headerShown: false,
-        // headerTintColor:GlobalStyles.colors.backgroundGreen,
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.darkGreen },
-        //tabBarActiveBackgroundColor: GlobalStyles.colors.lightBlue,
+        tabBarStyle: { borderTopWidth: 2 },
+
+        tabBarActiveBackgroundColor: GlobalStyles.colors.lightBlue,
+
         tabBarActiveTintColor: GlobalStyles.colors.white,
         tabBarOnPress: () => {
           Vibration.vibrate();
         },
-        // headerRight: ({ tintColor }) => (
-        //   <IconButton
-        //     icon="add"
-        //     size={24}
-        //     color={tintColor}
-        //     onPress={() => {
-        //       navigation.navigate("ManageExpense");
-        //     }}
-        //   />
-        // ),
+        
+    
+        tabBarItemStyle: {
+      
+          borderRadius: 200,
+         
+        },
       })}
     >
       <BottomTabs.Screen
@@ -49,16 +44,6 @@ export default function BottomTabsNavigation() {
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="home" size={size} color={color} />
           ),
-          // headerRight: () => (
-          //   <View style={{ marginRight: 10 }}>
-          //     <AntDesign
-          //       name="pluscircleo"
-          //       size={24}
-          //       color="black"
-          //       onPress={() => navigation.navigate("ModalScreen")}
-          //     />
-          //   </View>
-          // ),
         }}
       />
       <BottomTabs.Screen
@@ -95,6 +80,10 @@ export default function BottomTabsNavigation() {
         component={FeedScreen}
         options={{
           headerShown: true,
+          headerTintColor: "gray",
+          headerStyle: {
+            borderBottomWidth: 2.3,
+          },
           title: "Feed",
           tabBarLabel: "Feed",
 

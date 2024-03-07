@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setLesson } from "../redux/lessonReducer";
 import { loginUser } from "../redux/userReducer";
 import { setHomePathData } from "../redux/homePathReducer";
+import { setFeed } from "../redux/feedReducer";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,7 @@ export default function StackNavigation() {
     userName: "Aleksandar240902",
     joinedDate: "2024-02-27",
     hearts: 4,
-    points: 100,
+    points: 1000,
     daysStreak: 5,
     courses: ["DE", "BG"],
     currentCourse: "DE",
@@ -65,6 +66,43 @@ export default function StackNavigation() {
 ]
 //const lastLesson = 3
 dispatch(setHomePathData(homePathData));
+const feed = [
+  {
+    imgSrc: require("../Images/feed7.jpg"),
+    feedType: "LEARNING TIP",
+    publishedSinse: 6,
+    mainText: "After you've learned the basics, what comes next? Here's how to break through ",
+    secondaryText: "Here's what out exprts say!",
+    url:""
+  },
+  ,
+  {
+    imgSrc: require("../Images/feed2.jpg"),
+    feedType: "FUN",
+    publishedSinse: 21,
+    mainText: "Need a pick-up line in French? Or a break-up line in Portuguese?",
+    secondaryText: "We have you covered!",
+    url:""
+  },
+  {
+    imgSrc: require("../Images/feed4.jpg"),
+    feedType: "LEARNING TIP",
+    publishedSinse: 18,
+    mainText: "Can you forget your first language",
+    secondaryText: "Here's what out exprts say!",
+    url:""
+  },
+  {
+    imgSrc: require("../Images/feed1.jpg"),
+    feedType: "LEARNING TIP",
+    publishedSinse: 19,
+    mainText: "We're answering this question onse and for all:",
+    secondaryText: "can you learn a language in just 6 months?",
+    url:""
+  },
+  
+]
+dispatch(setFeed(feed))
   return (
     <NavigationContainer>
       <Stack.Navigator>

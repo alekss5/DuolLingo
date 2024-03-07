@@ -5,13 +5,16 @@ import ProgresSegment from '../components/UI/ProgresSegment';
 import LottieView from 'lottie-react-native';
 import Animation from '../Images/Animation.json';
 import { formatTimeFromMStoMin } from '../utils/globalFunctions';
+import { useDispatch } from 'react-redux';
+import { finish } from '../redux/userReducer';
 
 export default function FinishScreen({ navigation, route }) {
+  const dispatch = useDispatch()
   const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } = route.params;
   const { minutes, seconds } = formatTimeFromMStoMin(elapsedTime);
 
   const progress1Anim = useRef(new Animated.Value(-100)).current;
-  const progress2Anim = useRef(new Animated.Value(100)).current;
+  const progress2Anim = useRef(new Animated.Value(-100)).current;
   const progress3Anim = useRef(new Animated.Value(-100)).current;
   const opacity1Anim = useRef(new Animated.Value(0)).current;
   const opacity2Anim = useRef(new Animated.Value(0)).current;
@@ -32,6 +35,7 @@ export default function FinishScreen({ navigation, route }) {
     };
 
     animateProgress();
+    dispatch(finish())
   }, []);
 
   const animate = (animatedValue, toValue, duration) => {
