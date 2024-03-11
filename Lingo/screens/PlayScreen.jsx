@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SafeAreaView, StyleSheet, Text, View, Animated } from "react-native";
 import { ProgressBar, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../constants/Colors";
 import PlayScreenChoseList from "../components/PlayPage/PlayScreenChoseList";
 import ContinueButtonVew from "../components/PlayPage/ContinueButtonVew";
@@ -12,11 +11,11 @@ import { selectLessons } from "../redux/lessonReducer";
 import { selectHearts } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
 import CustomModal from "../components/UI/CustomModal";
-
-export default function PlayScreen({navigation}) {
+import { playSound } from "../utils/globalFunctions";
+import * as Haptics from "expo-haptics"
+export default function PlayScreen({ navigation }) {
   //const navigation = useNavigation();
   const dispatch = useDispatch();
-
 
   const lessons = useSelector(selectLessons);
   const hearts = useSelector(selectHearts);
@@ -34,12 +33,17 @@ export default function PlayScreen({navigation}) {
 
   const translateYAnim = useRef(new Animated.Value(-15)).current;
 
+  useEffect(() => {
+    playSound(lessons[currentLessonIndex]?.word);
+  }, [lessons, currentLessonIndex]);
+
   function goBack() {
     setModalOpen(true);
-    //navigation.goBack();
   }
 
-  function playWord() {}
+  function playWord(word) {
+    playSound(word);
+  }
 
   const handleCardPress = (card) => {
     if (countButtonPressed < 1) {
@@ -47,19 +51,20 @@ export default function PlayScreen({navigation}) {
       setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
     }
   };
- 
 
   useEffect(() => {
-    if(countButtonPressed === 1) {
-      if(isAnswerCorrect){
-        setIsAnswerRowVisible(true)
+    if (countButtonPressed === 1) {
+      if (isAnswerCorrect) {
+        
+        playSound("correct")
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Hard)
+        setIsAnswerRowVisible(true);
         setAnswersInARow((prev) => prev + 1);
-      }
-      else{
+      } else {
         setAnswersInARow(0);
       }
     }
-  
+
     if (countButtonPressed === 2) {
       setIsAnswerRowVisible(false);
       setcurrentLessonIndex(currentLessonIndex + 1);
@@ -67,11 +72,8 @@ export default function PlayScreen({navigation}) {
       setCountIsButtonPressed(0);
 
       if (isAnswerCorrect) {
-       
         setTotalCorrectAnswers((countAnswers) => countAnswers + 1);
-        
       } else {
-
         dispatch(decreceHearts());
       }
 
@@ -87,9 +89,9 @@ export default function PlayScreen({navigation}) {
     }
   }, [countButtonPressed, isAnswerCorrect]);
 
-
   useEffect(() => {
     if (answeredInARow >= 2) {
+     
       Animated.timing(translateYAnim, {
         toValue: 0,
         duration: 500,
@@ -121,7 +123,6 @@ export default function PlayScreen({navigation}) {
             onPress={goBack}
           />
           <View style={styles.progressBarContainer}>
-          
             {answeredInARow >= 2 && isAnswersRowVisible && (
               <Animated.View
                 style={[
@@ -129,10 +130,12 @@ export default function PlayScreen({navigation}) {
                   { transform: [{ translateY: translateYAnim }] },
                 ]}
               >
-                <Text style={styles.answersRowText}>{answeredInARow} IN A ROW</Text>
+                <Text style={styles.answersRowText}>
+                  {answeredInARow} IN A ROW
+                </Text>
               </Animated.View>
             )}
-          
+
             <ProgressBar
               progress={currentLessonIndex / lessons.length}
               color="#41980a"
@@ -153,7 +156,9 @@ export default function PlayScreen({navigation}) {
             size={26}
             onPress={() => playWord(lessons[currentLessonIndex]?.word)}
           />
-          <Text style={styles.playWord}>{lessons[currentLessonIndex]?.word}</Text>
+          <Text style={styles.playWord}>
+            {lessons[currentLessonIndex]?.word}
+          </Text>
         </View>
 
         <PlayScreenChoseList
@@ -173,7 +178,14 @@ export default function PlayScreen({navigation}) {
       <CustomModal
         modalVisible={modalOpen}
         setModalVisible={closeModal}
-        pressedStatisticInfo={{icon:"emoticon-dead",boldText:"Wait, don't go",grayText:"You're right on track! If you quit now, you'll lose your progress.",color:'#59cc00',mainButtonText:"Keep Learning"}}
+        pressedStatisticInfo={{
+          icon: "emoticon-dead",
+          boldText: "Wait, don't go",
+          grayText:
+            "You're right on track! If you quit now, you'll lose your progress.",
+          color: "#59cc00",
+          mainButtonText: "Keep Learning",
+        }}
       />
     </View>
   );
@@ -211,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   answersRowText: {
-    color:GlobalStyles.colors.accentOrange,
+    color: GlobalStyles.colors.accentOrange,
     fontWeight: "500",
     fontSize: 16,
   },

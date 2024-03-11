@@ -120,7 +120,7 @@ export default function HomeTestPath() {
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
 
-  //find the test from the database and add it to the redux store 
+  //find the test from the database and add it to the redux store
     navigation.navigate("PlayScreen");
   };
 

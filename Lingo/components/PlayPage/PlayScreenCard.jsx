@@ -1,6 +1,4 @@
-import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight,Image } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../../constants/Colors';
 
 export default function PlayScreenCard({ src, text, onPress, isPressed }) {
