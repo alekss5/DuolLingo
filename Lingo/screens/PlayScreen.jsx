@@ -13,9 +13,10 @@ import { selectHearts } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
 import CustomModal from "../components/UI/CustomModal";
 
-export default function PlayScreen() {
-  const navigation = useNavigation();
+export default function PlayScreen({navigation}) {
+  //const navigation = useNavigation();
   const dispatch = useDispatch();
+
 
   const lessons = useSelector(selectLessons);
   const hearts = useSelector(selectHearts);
@@ -46,6 +47,7 @@ export default function PlayScreen() {
       setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
     }
   };
+ 
 
   useEffect(() => {
     if(countButtonPressed === 1) {
@@ -84,6 +86,7 @@ export default function PlayScreen() {
       }
     }
   }, [countButtonPressed, isAnswerCorrect]);
+
 
   useEffect(() => {
     if (answeredInARow >= 2) {

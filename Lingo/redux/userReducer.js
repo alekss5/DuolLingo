@@ -30,7 +30,7 @@ const userSlice = createSlice({
         courses,
         currentCourse,
         totalXp,
-        todayWinStak,
+        todayWinSteak,
       } = action.payload;
       state.name = name;
       state.userName = userName;
@@ -42,7 +42,7 @@ const userSlice = createSlice({
       state.currentCourse = currentCourse;
       state.totalXp = totalXp;
       state.isAuthenticated = true;
-      state.todayWinStak = todayWinStak;
+      state.todayWinSteak = todayWinSteak;
     },
     logoutUser: (state) => {
       Object.assign(state, initialState);
@@ -59,8 +59,19 @@ const userSlice = createSlice({
         state.points -= 500
       }
     },
-    finish:(state)=>{
+    
+    finish:(state,action)=>{
+      const {xp} = action.payload
       state.points +=120
+
+      const currentCourseIndex = state.courses.findIndex(course => course.language === state.currentCourse);
+
+    
+     
+      if (currentCourseIndex !== -1) {
+        state.courses[currentCourseIndex].xp += xp;
+      }
+
       if(state.todayWinSteak===false){
         state.todayWinSteak = true
         state.daysStreak +=1

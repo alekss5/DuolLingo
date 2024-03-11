@@ -20,6 +20,8 @@ export default function FinishScreen({ navigation, route }) {
   const opacity2Anim = useRef(new Animated.Value(0)).current;
   const opacity3Anim = useRef(new Animated.Value(0)).current;
 
+  const percentageCorrect = ((totalCorrectAnswers + 1) / totalQuestionsCount) * 100;
+  const scorePercentage = Math.round(percentageCorrect);
   useEffect(() => {
     const animateProgress = () => {
       Animated.sequence([
@@ -35,7 +37,8 @@ export default function FinishScreen({ navigation, route }) {
     };
 
     animateProgress();
-    dispatch(finish())
+
+    dispatch(finish({xp:Math.round(120*(scorePercentage/100))}))
   }, []);
 
   const animate = (animatedValue, toValue, duration) => {
@@ -51,7 +54,6 @@ export default function FinishScreen({ navigation, route }) {
     navigation.navigate('HomeScreen');
   };
 
-  const percentageCorrect = ((totalCorrectAnswers + 1) / totalQuestionsCount) * 100;
   let scoreText;
   if (percentageCorrect === 100) {
     scoreText = 'PERFECT';
@@ -60,7 +62,7 @@ export default function FinishScreen({ navigation, route }) {
   } else {
     scoreText = 'IMPROVE';
   }
-  const scorePercentage = Math.round(percentageCorrect);
+  
 
   return (
     <>

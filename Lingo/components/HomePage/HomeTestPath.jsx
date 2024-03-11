@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Vibration,
   Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,11 +12,12 @@ import { GlobalStyles } from "../../constants/Colors";
 import {
   increaseUnitNumber,
   selectHomePathData,
-  selectLastLessonId,
+ 
   setSectionInformation,
 } from "../../redux/homePathReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "react-native-paper";
+import * as Haptics from "expo-haptics";
 
 export default function HomeTestPath() {
   const navigation = useNavigation();
@@ -117,9 +117,11 @@ export default function HomeTestPath() {
   };
 
   const navigateToDetails = (id) => {
-    Vibration.vibrate(3);
-    //console.log(id)
-    navigation.navigate("PlayScreen", { id });
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+
+  //find the test from the database and add it to the redux store 
+    navigation.navigate("PlayScreen");
   };
 
   const handleDividerLayout = (event, index) => {
@@ -135,7 +137,9 @@ export default function HomeTestPath() {
     const offsetY = event.nativeEvent.contentOffset.y;
     //console.log(Math.round(offsetY))
     //console.log(Math.round(dividerPositions[i].position))
-    console.log(dividerPositions);
+
+
+  //  console.log(dividerPositions);
 
     if (Math.round(dividerPositions[i].position) === Math.round(offsetY)) {
       dispatch(increaseUnitNumber());

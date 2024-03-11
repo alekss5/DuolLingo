@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight,Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../../constants/Colors';
 
-export default function PlayScreenCard({ icon, text, onPress, isPressed }) {
+export default function PlayScreenCard({ src, text, onPress, isPressed }) {
+
   return (
     <TouchableHighlight
       style={[styles.container, isPressed && styles.containerPressed]}
@@ -11,7 +12,8 @@ export default function PlayScreenCard({ icon, text, onPress, isPressed }) {
       underlayColor={GlobalStyles.colors.lightBlue}
     >
       <View>
-        <MaterialCommunityIcons name={icon} size={120} style={styles.icon} />
+        {/* <MaterialCommunityIcons name={icon} size={120} style={styles.icon} /> */}
+        <Image source={src} style={styles.image} />
         <Text style={styles.text}>{text}</Text>
       </View>
     </TouchableHighlight>
@@ -40,5 +42,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     alignSelf: 'center',
+  }, image: {
+    width: "auto",
+    height: 160,
   },
 });

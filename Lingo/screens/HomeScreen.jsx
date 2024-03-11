@@ -1,17 +1,23 @@
-import { StyleSheet, SafeAreaView, View, Touchable } from "react-native";
+import { StyleSheet, SafeAreaView, View, Touchable, Vibration } from "react-native";
 import {  useState } from "react";
 import { GlobalStyles } from "../constants/Colors";
 import TopNavBar from "../components/HomePage/TopNavBar";
 import CurrentLestonBanner from "../components/HomePage/CurrentLestonBanner";
 import HomeTestPath from "../components/HomePage/HomeTestPath";
-
 import HeartsModal from "../components/Modals/HeartsModal";
-
+import * as Haptics from 'expo-haptics'
 
 export default function HomeScreen({ navigation }) {
   const [heartsModal, setHeartsModal] = useState(false);
 
+  const options = {
+    enableVibrateFallback: true,
+    ignoreAndroidSystemSettings: false,
+  };
+
   function openHeartsModal() {
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     setHeartsModal(true);
   }
 
