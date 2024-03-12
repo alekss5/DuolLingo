@@ -72,7 +72,7 @@ export default function ContinueButtonVew({
                       : { color: GlobalStyles.colors.errorRed },
                   ]}
                 >
-                  {isCorrect ? "Nise!" : "Wrong, give it another try"}
+                  {isCorrect ? "Nice!" : "Wrong, give it another try"}
                 </Text>
               </View>
 

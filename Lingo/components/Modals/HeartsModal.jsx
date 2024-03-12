@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectHearts } from "../../redux/userReducer";
 import PointsIconText from "../UI/PointsIconText";
 import { buyHearts } from "../../redux/userReducer";
+import HeartsModalContent from "./HeartsModalContent";
 export default function HeartsModal({ isModalOpen, closeModal }) {
   const slideAnim = useRef(new Animated.Value(-100)).current;
   const heartsCount = useSelector(selectHearts);
@@ -36,36 +37,6 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
     }
   }, [isModalOpen, slideAnim]);
 
-  const renderIcons = () => {
-    const heartIcons = [];
-    for (let i = 0; i < heartsCount; i++) {
-      heartIcons.push(
-        <MaterialCommunityIcons
-          key={i}
-          name="heart"
-          size={45}
-          color="red"
-          style={{ marginHorizontal: 7 }}
-        />
-      );
-    }
-    for (let i = 0; i < 5 - heartsCount; i++) {
-      heartIcons.push(
-        <MaterialCommunityIcons
-          key={i + 5}
-          name="heart"
-          size={45}
-          color="pink"
-          style={{ marginHorizontal: 7 }}
-        />
-      );
-    }
-    return heartIcons;
-  };
-
-  function buyHeartsHandler(){
-    dispatch(buyHearts())
-  }
   return (
     <Modal
       visible={isModalOpen}
@@ -86,65 +57,7 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
           },
         ]}
       >
-        <View>
-          <View style={styles.heartsContainer}>{renderIcons()}</View>
-          <Text style={styles.heartsCountText}>
-            {" "}
-            {heartsCount === 5
-              ? " You have full hearts"
-              : "Next heart after 4 hours"}{" "}
-          </Text>
-          <Text style={{ textAlign: "center", marginTop: 10 }}>
-            {" "}
-            Keep on learning
-          </Text>
-          <TouchableOpacity onPress={buyHeartsHandler} disabled={heartsCount===5} style={styles.pressbleContainer}>
-          <View style={[styles.buttonContainer, heartsCount == 5 &&{backgroundColor:'gray'}]}>
-            <MaterialCommunityIcons
-              name="heart"
-              size={20}
-              color="red"
-              style={{ padding: 4 }}
-            />
-            <Text style={{ flex: 1, padding: 5, fontWeight: "bold" }}>
-              REFILL HEARTS
-            </Text>
-            <PointsIconText value="500" />
-          </View>
-          </TouchableOpacity>
-
-          <View style={[styles.buttonContainer, { backgroundColor: "blue" }]}>
-            <MaterialCommunityIcons
-              name="heart-plus"
-              size={20}
-              color="white"
-              style={{ padding: 4 }}
-            />
-            <Text
-              style={{
-                flex: 1,
-                padding: 5,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              UNLIMITED HEARTS
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <MaterialCommunityIcons
-              name="heart"
-              size={20}
-              color="red"
-              style={{ padding: 4 }}
-            />
-            <Text style={{ flex: 1, padding: 5, fontWeight: "bold" }}>
-              PRACTICE TO EARN HEARTS
-            </Text>
-          </View>
-
-          <Divider style={styles.divider} />
-        </View>
+       <HeartsModalContent heartIcons={true} closeModal={closeModal}/>
       </Animated.View>
       <TouchableWithoutFeedback onPress={closeModal}>
         <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>

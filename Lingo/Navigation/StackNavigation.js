@@ -14,6 +14,8 @@ import { setLesson } from "../redux/lessonReducer";
 import { loginUser } from "../redux/userReducer";
 import { setHomePathData } from "../redux/homePathReducer";
 import { setFeed } from "../redux/feedReducer";
+import NoHeartsScreen from "../screens/NoHeartsScreen";
+import CommingSoonScreen from "../screens/CommingSoonScreen";
 
 const Stack = createStackNavigator();
 
@@ -37,7 +39,7 @@ export default function StackNavigation() {
     name: "Aleksandar Grigorov",
     userName: "Aleksandar240902",
     joinedDate: "2024-02-27",
-    hearts: 4,
+    hearts: 1,
     points: 1000,
     daysStreak: 5,
     courses: [
@@ -154,6 +156,17 @@ export default function StackNavigation() {
           component={FinishScreen}
           options={{ headerShown: false, gestureEnabled: false }}
         />
+         <Stack.Screen
+          name="NoHeartsScreen"
+          component={NoHeartsScreen}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="CommingSoonScreen"
+          component={CommingSoonScreen}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
