@@ -9,7 +9,7 @@ const Timer = ({ onUpdate }) => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [onUpdate, startTime]);
+  }, []);
 
   return null;
 };

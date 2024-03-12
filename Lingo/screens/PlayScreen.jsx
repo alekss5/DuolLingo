@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { SafeAreaView, StyleSheet, Text, View, Animated } from "react-native";
 import { ProgressBar, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,16 +12,17 @@ import { selectHearts } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
 import CustomModal from "../components/UI/CustomModal";
 import { playSound } from "../utils/globalFunctions";
-import * as Haptics from "expo-haptics"
+import * as Haptics from "expo-haptics";
+
 export default function PlayScreen({ navigation }) {
-  //const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const lessons = useSelector(selectLessons);
   const hearts = useSelector(selectHearts);
-  const [modalOpen, setModalOpen] = useState(false);
 
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const elapsedTime = useRef(0);
+  
+  const [modalOpen, setModalOpen] = useState(false);
   const [pressedCard, setPressedCard] = useState(null);
   const [currentLessonIndex, setcurrentLessonIndex] = useState(0);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
@@ -33,31 +34,46 @@ export default function PlayScreen({ navigation }) {
 
   const translateYAnim = useRef(new Animated.Value(-15)).current;
 
+  const goBack = useCallback(() => {
+    setModalOpen(true);
+  }, []);
+
+  const playWord = useCallback((word) => {
+    playSound(word);
+  }, []);
+
+  const handleCardPress = useCallback(
+    (card) => {
+      if (countButtonPressed < 1) {
+        setPressedCard(card);
+        setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
+      }
+    },
+    [countButtonPressed, currentLessonIndex, lessons]
+  );
+
+  const handleContinuePress = useCallback(() => {
+    setCountIsButtonPressed(countButtonPressed + 1);
+  }, [countButtonPressed]);
+
+  console.log("render");
+  const handleTimerUpdate = useCallback((timeElapsed) => {
+    elapsedTime.current = timeElapsed;
+  }, []);
+  const MemoizedTimer = useMemo(() => {
+    return <Timer onUpdate={handleTimerUpdate} />;
+  }, [handleTimerUpdate]);
+  const closeModal = useCallback(() => setModalOpen(false), []);
+
   useEffect(() => {
     playSound(lessons[currentLessonIndex]?.word);
   }, [lessons, currentLessonIndex]);
 
-  function goBack() {
-    setModalOpen(true);
-  }
-
-  function playWord(word) {
-    playSound(word);
-  }
-
-  const handleCardPress = (card) => {
-    if (countButtonPressed < 1) {
-      setPressedCard(card);
-      setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
-    }
-  };
-
   useEffect(() => {
     if (countButtonPressed === 1) {
       if (isAnswerCorrect) {
-        
-        playSound("correct")
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Hard)
+        playSound("correct");
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Hard);
         setIsAnswerRowVisible(true);
         setAnswersInARow((prev) => prev + 1);
       } else {
@@ -78,10 +94,9 @@ export default function PlayScreen({ navigation }) {
       }
 
       if (currentLessonIndex + 1 >= lessons.length) {
-        setElapsedTime((elapsedTime) => elapsedTime + 1000);
         const totalQuestionsCount = lessons.length;
         navigation.navigate("FinishScreen", {
-          elapsedTime,
+          elapsedTime: elapsedTime.current,
           totalCorrectAnswers,
           totalQuestionsCount,
         });
@@ -91,7 +106,6 @@ export default function PlayScreen({ navigation }) {
 
   useEffect(() => {
     if (answeredInARow >= 2) {
-     
       Animated.timing(translateYAnim, {
         toValue: 0,
         duration: 500,
@@ -100,94 +114,85 @@ export default function PlayScreen({ navigation }) {
     }
   }, [answeredInARow, translateYAnim]);
 
-  const handleContinuePress = () => {
-    setCountIsButtonPressed(countButtonPressed + 1);
-  };
-
-  const handleTimerUpdate = (timeElapsed) => {
-    setElapsedTime(timeElapsed);
-  };
-
-  const closeModal = () => setModalOpen(false);
-
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView>
-        <Timer onUpdate={handleTimerUpdate} style={styles.invisible} />
-        <View style={styles.container}>
-          <IconButton
-            icon="close"
-            iconColor={GlobalStyles.colors.gray}
-            style={styles.closeButton}
-            size={26}
-            onPress={goBack}
-          />
-          <View style={styles.progressBarContainer}>
-            {answeredInARow >= 2 && isAnswersRowVisible && (
-              <Animated.View
-                style={[
-                  styles.answersRowContainer,
-                  { transform: [{ translateY: translateYAnim }] },
-                ]}
-              >
-                <Text style={styles.answersRowText}>
-                  {answeredInARow} IN A ROW
-                </Text>
-              </Animated.View>
-            )}
-
-            <ProgressBar
-              progress={currentLessonIndex / lessons.length}
-              color="#41980a"
-              style={styles.progressBar}
+    <>
+      {MemoizedTimer}
+      <View style={{ flex: 1 }}>
+        <SafeAreaView>
+          <View style={styles.container}>
+            <IconButton
+              icon="close"
+              iconColor={GlobalStyles.colors.gray}
+              style={styles.closeButton}
+              size={26}
+              onPress={goBack}
             />
-          </View>
-          <View style={styles.rowContainer}>
-            <MaterialCommunityIcons name="heart" size={30} color="red" />
-            <Text style={styles.heartText}> {hearts}</Text>
-          </View>
-        </View>
-        <Text style={styles.headerText}>Select the correct answer</Text>
-        <View style={styles.wrap}>
-          <IconButton
-            icon="volume-high"
-            iconColor={GlobalStyles.colors.white}
-            style={styles.volumeButton}
-            size={26}
-            onPress={() => playWord(lessons[currentLessonIndex]?.word)}
-          />
-          <Text style={styles.playWord}>
-            {lessons[currentLessonIndex]?.word}
-          </Text>
-        </View>
+            <View style={styles.progressBarContainer}>
+              {answeredInARow >= 2 && isAnswersRowVisible && (
+                <Animated.View
+                  style={[
+                    styles.answersRowContainer,
+                    { transform: [{ translateY: translateYAnim }] },
+                  ]}
+                >
+                  <Text style={styles.answersRowText}>
+                    {answeredInARow} IN A ROW
+                  </Text>
+                </Animated.View>
+              )}
 
-        <PlayScreenChoseList
-          lesson={lessons[currentLessonIndex]}
-          pressedCard={pressedCard}
-          handleCardPress={handleCardPress}
+              <ProgressBar
+                progress={currentLessonIndex / lessons.length}
+                color="#41980a"
+                style={styles.progressBar}
+              />
+            </View>
+            <View style={styles.rowContainer}>
+              <MaterialCommunityIcons name="heart" size={30} color="red" />
+              <Text style={styles.heartText}> {hearts}</Text>
+            </View>
+          </View>
+          <Text style={styles.headerText}>Select the correct answer</Text>
+          <View style={styles.wrap}>
+            <IconButton
+              icon="volume-high"
+              iconColor={GlobalStyles.colors.white}
+              style={styles.volumeButton}
+              size={26}
+              onPress={() => playWord(lessons[currentLessonIndex]?.word)}
+            />
+            <Text style={styles.playWord}>
+              {lessons[currentLessonIndex]?.word}
+            </Text>
+          </View>
+          <PlayScreenChoseList
+            lesson={lessons[currentLessonIndex]}
+            pressedCard={pressedCard}
+            handleCardPress={handleCardPress}
+          />
+        </SafeAreaView>
+        <ContinueButtonVew
+          isCorrect={isAnswerCorrect}
+          isPressedCard={!pressedCard}
+          shareMessage={
+            "React Native | A framework for building native apps using React"
+          }
+          onContinuePress={handleContinuePress}
         />
-      </SafeAreaView>
-      <ContinueButtonVew
-        isCorrect={isAnswerCorrect}
-        isPressedCard={!pressedCard}
-        shareMessage={
-          "React Native | A framework for building native apps using React"
-        }
-        onContinuePress={handleContinuePress}
-      />
-      <CustomModal
-        modalVisible={modalOpen}
-        setModalVisible={closeModal}
-        pressedStatisticInfo={{
-          icon: "emoticon-dead",
-          boldText: "Wait, don't go",
-          grayText:
-            "You're right on track! If you quit now, you'll lose your progress.",
-          color: "#59cc00",
-          mainButtonText: "Keep Learning",
-        }}
-      />
-    </View>
+        <CustomModal
+          modalVisible={modalOpen}
+          setModalVisible={closeModal}
+          pressedStatisticInfo={{
+            icon: "emoticon-dead",
+            boldText: "Wait, don't go",
+            grayText:
+              "You're right on track! If you quit now, you'll lose your progress.",
+            color: "#59cc00",
+            mainButtonText: "Keep Learning",
+          }}
+        />
+      </View>
+    </>
   );
 }
 

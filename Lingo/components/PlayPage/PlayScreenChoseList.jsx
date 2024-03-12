@@ -7,7 +7,7 @@ export default function PlayScreenChoseList({
   handleCardPress,
   lesson,
 }) {
-
+console.log('renderList')
 
   return (
     <>
