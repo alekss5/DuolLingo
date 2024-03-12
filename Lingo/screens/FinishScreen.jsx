@@ -1,16 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Animated, Easing } from 'react-native';
-import ContinueButton from '../components/UI/ContinueButton';
-import ProgresSegment from '../components/UI/ProgresSegment';
-import LottieView from 'lottie-react-native';
-import Animation from '../Images/Animation.json';
-import { formatTimeFromMStoMin } from '../utils/globalFunctions';
-import { useDispatch } from 'react-redux';
-import { finish } from '../redux/userReducer';
+import React, { useEffect, useRef } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Easing,
+} from "react-native";
+import ContinueButton from "../components/UI/ContinueButton";
+import ProgresSegment from "../components/UI/ProgresSegment";
+import LottieView from "lottie-react-native";
+import Animation from "../Images/Animation.json";
+import { formatTimeFromMStoMin } from "../utils/globalFunctions";
+import { useDispatch } from "react-redux";
+import { finish } from "../redux/userReducer";
+import { successVibration } from "../utils/vibrationPaterns";
 
 export default function FinishScreen({ navigation, route }) {
-  const dispatch = useDispatch()
-  const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } = route.params;
+  const dispatch = useDispatch();
+  const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } =
+    route.params;
   const { minutes, seconds } = formatTimeFromMStoMin(elapsedTime);
 
   const progress1Anim = useRef(new Animated.Value(-100)).current;
@@ -20,13 +29,15 @@ export default function FinishScreen({ navigation, route }) {
   const opacity2Anim = useRef(new Animated.Value(0)).current;
   const opacity3Anim = useRef(new Animated.Value(0)).current;
 
-  const percentageCorrect = ((totalCorrectAnswers + 1) / totalQuestionsCount) * 100;
+  const percentageCorrect =
+    ((totalCorrectAnswers + 1) / totalQuestionsCount) * 100;
   const scorePercentage = Math.round(percentageCorrect);
   useEffect(() => {
     const animateProgress = () => {
       Animated.sequence([
         animate(opacity1Anim, 1, 300),
         animate(progress1Anim, 0, 300),
+
         Animated.delay(300),
         animate(opacity2Anim, 1, 300),
         animate(progress2Anim, 0, 500),
@@ -38,7 +49,7 @@ export default function FinishScreen({ navigation, route }) {
 
     animateProgress();
 
-    dispatch(finish({xp:Math.round(120*(scorePercentage/100))}))
+    dispatch(finish({ xp: Math.round(120 * (scorePercentage / 100)) }));
   }, []);
 
   const animate = (animatedValue, toValue, duration) => {
@@ -51,31 +62,52 @@ export default function FinishScreen({ navigation, route }) {
   };
 
   const goBack = () => {
-    navigation.navigate('HomeScreen');
+    successVibration();
+    navigation.navigate("HomeScreen");
   };
 
   let scoreText;
   if (percentageCorrect === 100) {
-    scoreText = 'PERFECT';
+    scoreText = "PERFECT";
   } else if (percentageCorrect > 50) {
-    scoreText = 'GOOD';
+    scoreText = "GOOD";
   } else {
-    scoreText = 'IMPROVE';
+    scoreText = "IMPROVE";
   }
-  
 
   return (
     <>
       <SafeAreaView style={styles.container}>
         <View style={styles.animationContainer}>
-          <LottieView source={Animation} autoPlay loop={false} style={styles.animation} />
+          <LottieView
+            source={Animation}
+            autoPlay
+            loop={false}
+            style={styles.animation}
+          />
         </View>
         <Text style={styles.title}>Lesson complete!</Text>
         <View style={styles.progressSummaryContainer}>
-          <Animated.View style={{ transform: [{ translateY: progress1Anim }], opacity: opacity1Anim }}>
-            <ProgresSegment title="Total XP" color="#ffc800" icon="star-four-points-outline" score={30} dealay={350} />
+          <Animated.View
+            style={{
+              transform: [{ translateY: progress1Anim }],
+              opacity: opacity1Anim,
+            }}
+          >
+            <ProgresSegment
+              title="Total XP"
+              color="#ffc800"
+              icon="star-four-points-outline"
+              score={30}
+              dealay={350}
+            />
           </Animated.View>
-          <Animated.View style={{ transform: [{ translateY: progress2Anim }], opacity: opacity2Anim }}>
+          <Animated.View
+            style={{
+              transform: [{ translateY: progress2Anim }],
+              opacity: opacity2Anim,
+            }}
+          >
             <ProgresSegment
               title="SPEED"
               color="#4ac0f8"
@@ -86,7 +118,12 @@ export default function FinishScreen({ navigation, route }) {
               dealay={1000}
             />
           </Animated.View>
-          <Animated.View style={{ transform: [{ translateY: progress3Anim }], opacity: opacity3Anim }}>
+          <Animated.View
+            style={{
+              transform: [{ translateY: progress3Anim }],
+              opacity: opacity3Anim,
+            }}
+          >
             <ProgresSegment
               title={scoreText}
               color="#93d334"
@@ -97,8 +134,13 @@ export default function FinishScreen({ navigation, route }) {
             />
           </Animated.View>
         </View>
+
+        <ContinueButton
+          isPressedCard={false}
+          submitAnswer={goBack}
+          color="#4ac0f8"
+        />
       </SafeAreaView>
-      <ContinueButton isPressedCard={false} submitAnswer={goBack} color="#4ac0f8" />
     </>
   );
 }
@@ -109,26 +151,26 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 40,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 30,
-    fontWeight: '600',
-    color: '#ffc800',
+    fontWeight: "600",
+    color: "#ffc800",
   },
   progressSummaryContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 1,
     marginTop: 5,
     marginBottom: 10,
     marginHorizontal: 9,
   },
   animationContainer: {
-    marginTop: '25%',
-    alignItems: 'center',
+    marginTop: "25%",
+    alignItems: "center",
   },
   animation: {
-    width: '100%',
+    width: "100%",
     height: 250,
   },
 });

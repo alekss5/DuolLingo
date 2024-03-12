@@ -6,17 +6,18 @@ import { Button } from "react-native-paper";
 import { GlobalStyles } from "../../constants/Colors";
 import { shareContent } from "../../utils/share";
 import { useNavigation } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
 export default function CustomModal({
   modalVisible,
   setModalVisible,
   pressedStatisticInfo,
+  animationSrc,
 }) {
   const { icon, boldText, grayText, color, shareText, mainButtonText } =
     pressedStatisticInfo || {};
   const navigate = useNavigation();
 
   return (
- 
     <Modal
       animationType="slide"
       transparent={true}
@@ -29,8 +30,18 @@ export default function CustomModal({
       <BlurView style={styles.absolute} intensity={10} tint="light" />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-        
-          <MaterialCommunityIcons name={icon} size={140} color={color} />
+
+          {icon === "null" ? (
+            <LottieView
+              source={animationSrc}
+              autoPlay
+              loop={true}
+              style={styles.animation}
+            />
+          ) : (
+            <MaterialCommunityIcons name={icon} size={140} color={color} />
+          )}
+
           <Text style={styles.modalText}>{boldText}</Text>
           <Text style={styles.grayText}>{grayText}</Text>
 
@@ -68,11 +79,9 @@ export default function CustomModal({
           >
             Dismis
           </Button>
-    
         </View>
       </View>
     </Modal>
-  
   );
 }
 
@@ -131,5 +140,9 @@ const styles = StyleSheet.create({
     color: GlobalStyles.colors.gray,
     fontSize: 18,
     paddingBottom: "10%",
+  },
+  animation: {
+    width: "100%",
+    height: 150,
   },
 });

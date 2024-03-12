@@ -11,8 +11,10 @@ import { selectLessons } from "../redux/lessonReducer";
 import { selectHearts } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
 import CustomModal from "../components/UI/CustomModal";
+import SwingAnimation from "../Images/SwingAnimation.json"
 import { playSound } from "../utils/globalFunctions";
-import * as Haptics from "expo-haptics";
+import { errorVibration, lightVibration, successVibration, warningVibration } from "../utils/vibrationPaterns";
+
 
 export default function PlayScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ export default function PlayScreen({ navigation }) {
   const hearts = useSelector(selectHearts);
 
   const elapsedTime = useRef(0);
-  
+
   const [modalOpen, setModalOpen] = useState(false);
   const [pressedCard, setPressedCard] = useState(null);
   const [currentLessonIndex, setcurrentLessonIndex] = useState(0);
@@ -35,7 +37,9 @@ export default function PlayScreen({ navigation }) {
   const translateYAnim = useRef(new Animated.Value(-15)).current;
 
   const goBack = useCallback(() => {
+    warningVibration()
     setModalOpen(true);
+
   }, []);
 
   const playWord = useCallback((word) => {
@@ -45,6 +49,7 @@ export default function PlayScreen({ navigation }) {
   const handleCardPress = useCallback(
     (card) => {
       if (countButtonPressed < 1) {
+        lightVibration()
         setPressedCard(card);
         setIsAnswerCorrect(card === lessons[currentLessonIndex].word);
       }
@@ -73,15 +78,17 @@ export default function PlayScreen({ navigation }) {
     if (countButtonPressed === 1) {
       if (isAnswerCorrect) {
         playSound("correct");
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Hard);
+       successVibration()
         setIsAnswerRowVisible(true);
         setAnswersInARow((prev) => prev + 1);
       } else {
+        errorVibration()
         setAnswersInARow(0);
       }
     }
 
     if (countButtonPressed === 2) {
+      lightVibration()
       setIsAnswerRowVisible(false);
       setcurrentLessonIndex(currentLessonIndex + 1);
       setPressedCard(null);
@@ -94,6 +101,7 @@ export default function PlayScreen({ navigation }) {
       }
 
       if (currentLessonIndex + 1 >= lessons.length) {
+        successVibration()
         const totalQuestionsCount = lessons.length;
         navigation.navigate("FinishScreen", {
           elapsedTime: elapsedTime.current,
@@ -182,8 +190,9 @@ export default function PlayScreen({ navigation }) {
         <CustomModal
           modalVisible={modalOpen}
           setModalVisible={closeModal}
+          animationSrc={SwingAnimation}
           pressedStatisticInfo={{
-            icon: "emoticon-dead",
+            icon: "null",
             boldText: "Wait, don't go",
             grayText:
               "You're right on track! If you quit now, you'll lose your progress.",

@@ -17,7 +17,7 @@ import {
 } from "../../redux/homePathReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "react-native-paper";
-import * as Haptics from "expo-haptics";
+import { lightVibration } from "../../utils/vibrationPaterns";
 
 export default function HomeTestPath() {
   const navigation = useNavigation();
@@ -118,7 +118,7 @@ export default function HomeTestPath() {
 
   const navigateToDetails = (id) => {
 
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    lightVibration()
 
   //find the test from the database and add it to the redux store
     navigation.navigate("PlayScreen");
