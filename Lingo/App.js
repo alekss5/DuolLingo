@@ -1,30 +1,30 @@
 import { StatusBar } from "expo-status-bar";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet } from "react-native";
-import { GlobalStyles } from "./constants/Colors";
-
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-
+//import { RealmProvider } from "@realm/react";
 import StackNavigation from "./Navigation/StackNavigation";
+import FetchData from "./redux/FetchData";
 
-const BottomTabs = createBottomTabNavigator();
 
 export default function App() {
   return (
+
     <Provider store={store}>
+
       <PersistGate loading={null} persistor={persistor}>
         <StatusBar style="dark" />
+        <FetchData/>
+
+
+
         <StackNavigation />
+ 
+       
       </PersistGate>
+    
     </Provider>
+ 
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: GlobalStyles.colors.black,
-  },
-});

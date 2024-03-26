@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { GlobalStyles } from "../../constants/Colors";
+import { calculateDaysSince } from "../../utils/globalFunctions";
 
-export default function FeedElement({ imgSrc,feedType,publishedSinse,mainText,secondaryText }) {
+export default function FeedElement({ imgSrc,feedType,publishedDate,mainText,secondaryText }) {
+  const publishedSinse = calculateDaysSince(publishedDate)
+
   return (
     <View style={styles.elemetnContainer}>
-      <Image source={imgSrc} style={styles.image} />
+      <Image source={{ uri:imgSrc}} style={styles.image} />
       <View style={{ padding: 10 }}>
         <View style={styles.feedTypeContainer}>
           <View

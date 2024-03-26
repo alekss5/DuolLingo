@@ -12,7 +12,6 @@ import { GlobalStyles } from "../../constants/Colors";
 import {
   increaseUnitNumber,
   selectHomePathData,
- 
   setSectionInformation,
 } from "../../redux/homePathReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +30,7 @@ export default function HomeTestPath() {
   const deviation = 7;
 
   const homePathData = useSelector(selectHomePathData);
-  const hearts = useSelector(selectHearts)
+  const hearts = useSelector(selectHearts);
 
   useEffect(() => {
     const sectionNames = homePathData.map((item) => item.sectionName);
@@ -119,21 +118,14 @@ export default function HomeTestPath() {
   };
 
   const navigateToDetails = (id) => {
-
-    
-    if(hearts===0){
-      hardVibration()
-      navigation.navigate('NoHeartsScreen')
-    }
-    else{
-      lightVibration()
+    if (hearts === 0) {
+      hardVibration();
+      navigation.navigate("NoHeartsScreen");
+    } else {
+      lightVibration();
       navigation.navigate("PlayScreen");
-        //find the test from the database and add it to the redux store
+      //find the test from the database and add it to the redux store
     }
-
-
- 
-  
   };
 
   const handleDividerLayout = (event, index) => {
@@ -150,8 +142,7 @@ export default function HomeTestPath() {
     //console.log(Math.round(offsetY))
     //console.log(Math.round(dividerPositions[i].position))
 
-
-  //  console.log(dividerPositions);
+    //  console.log(dividerPositions);
 
     if (Math.round(dividerPositions[i].position) === Math.round(offsetY)) {
       dispatch(increaseUnitNumber());

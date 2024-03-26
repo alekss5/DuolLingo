@@ -5,9 +5,11 @@ import { selectSectionName, selectSectionNumber, selectUnitNumber } from "../../
 import { useSelector } from "react-redux";
 
 export default function CurrentLessonBanner() {
+
   const sectionNumber = useSelector(selectSectionNumber)
   const sectionText = useSelector(selectSectionName)
   const unitNumber = useSelector(selectUnitNumber)
+  
   return (
     <View style={styles.container}>
       <Text style={styles.section}>Section {sectionNumber}, Unit {unitNumber}</Text>

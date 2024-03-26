@@ -7,6 +7,8 @@ import { selectFeed } from '../redux/feedReducer';
 export default function FeedScreen() {
   const feedData = useSelector(selectFeed);
 
+
+  
   return (
     <ScrollView>
       {feedData.map((feedItem, index) => (
@@ -14,7 +16,7 @@ export default function FeedScreen() {
           key={index}
           imgSrc={feedItem.imgSrc}
           feedType={feedItem.feedType}
-          publishedSinse={feedItem.publishedSinse}
+          publishedDate={feedItem.publishedDate}
           mainText={feedItem.mainText}
           secondaryText={feedItem.secondaryText}
         />

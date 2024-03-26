@@ -1,11 +1,17 @@
-import { StyleSheet, SafeAreaView, View, Touchable, Vibration } from "react-native";
-import {  useState } from "react";
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  Touchable,
+  Vibration,
+} from "react-native";
+import { useState } from "react";
 import { GlobalStyles } from "../constants/Colors";
 import TopNavBar from "../components/HomePage/TopNavBar";
 import CurrentLestonBanner from "../components/HomePage/CurrentLestonBanner";
 import HomeTestPath from "../components/HomePage/HomeTestPath";
 import HeartsModal from "../components/Modals/HeartsModal";
-import * as Haptics from 'expo-haptics'
+import * as Haptics from "expo-haptics";
 
 export default function HomeScreen({ navigation }) {
   const [heartsModal, setHeartsModal] = useState(false);
@@ -16,9 +22,24 @@ export default function HomeScreen({ navigation }) {
   };
 
   function openHeartsModal() {
-
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setHeartsModal(true);
+    fetch("http://localhost:8080/auth/", {
+      method: "POST",
+      body: JSON.stringify({
+        name: "Aleksandar Grigorov",
+        userName: "Aleksandar240902",
+        email: "aleksndar305@gmail.com",
+        password: "5505667Sa",
+        currentCourse: "DE",
+        
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   function closeHeartsModal() {

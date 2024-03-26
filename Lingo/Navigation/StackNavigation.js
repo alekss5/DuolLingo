@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { setLesson } from "../redux/lessonReducer";
 import { loginUser } from "../redux/userReducer";
 import { setHomePathData } from "../redux/homePathReducer";
-import { setFeed } from "../redux/feedReducer";
 import NoHeartsScreen from "../screens/NoHeartsScreen";
 import CommingSoonScreen from "../screens/CommingSoonScreen";
 
@@ -22,11 +20,35 @@ const Stack = createStackNavigator();
 export default function StackNavigation() {
   const dispatch = useDispatch();
   const lesson = [
-    { word: "Beer", choises: [{text:"Milch",icon:"Milk"},{text:"Tee",icon:"Tea"}, {text:"Brot",icon:"Bread"},{text:"Bier",icon:"Beer"} ] },
-    { word: "Milk", choises:  [{text:"Bier",icon:"Beer"}, {text:"Milch",icon:"Milk"}, {text:"Brot",icon:"Bread"},{text:"Tee",icon:"Tea"}] },
-    { word: "Bread", choises: [{text:"Milch",icon:"Milk"},{text:"Bier",icon:"Beer"}, {text:"Tee",icon:"Tea"}, {text:"Brot",icon:"Bread"}] },
+    {
+      word: "Beer",
+      choises: [
+        { text: "Milch", icon: "Milk" },
+        { text: "Tee", icon: "Tea" },
+        { text: "Brot", icon: "Bread" },
+        { text: "Bier", icon: "Beer" },
+      ],
+    },
+    {
+      word: "Milk",
+      choises: [
+        { text: "Bier", icon: "Beer" },
+        { text: "Milch", icon: "Milk" },
+        { text: "Brot", icon: "Bread" },
+        { text: "Tee", icon: "Tea" },
+      ],
+    },
+    {
+      word: "Bread",
+      choises: [
+        { text: "Milch", icon: "Milk" },
+        { text: "Bier", icon: "Beer" },
+        { text: "Tee", icon: "Tea" },
+        { text: "Brot", icon: "Bread" },
+      ],
+    },
   ];
-  // {
+  // const lessons = [{
   //   id: 1,
   //   data: [
   //     { word: "Bier", choices: ["milk", "Tea", "Bred", "Bier"] },
@@ -34,6 +56,14 @@ export default function StackNavigation() {
   //     { word: "Bred", choices: ["Bier", "Tea", "Milk", "Bred"] },
   //   ]
   // },
+  //{
+  //id: 2,
+  //   data: [
+  //     { word: "Bier", choices: ["milk", "Tea", "Bred", "Bier"] },
+  //     { word: "Milk", choices: ["Bier", "Tea", "Bred", "Milk"] },
+  //     { word: "Bred", choices: ["Bier", "Tea", "Milk", "Bred"] },
+  //   ]
+  // },]
   dispatch(setLesson(lesson));
   const userData = {
     name: "Aleksandar Grigorov",
@@ -91,46 +121,10 @@ export default function StackNavigation() {
       ],
     },
   ];
+
   //const lastLesson = 3
   dispatch(setHomePathData(homePathData));
-  const feed = [
-    {
-      imgSrc: require("../Images/feed7.jpg"),
-      feedType: "LEARNING TIP",
-      publishedSinse: 6,
-      mainText:
-        "After you've learned the basics, what comes next? Here's how to break through ",
-      secondaryText: "Here's what out exprts say!",
-      url: "",
-    },
-    ,
-    {
-      imgSrc: require("../Images/feed2.jpg"),
-      feedType: "FUN",
-      publishedSinse: 21,
-      mainText:
-        "Need a pick-up line in French? Or a break-up line in Portuguese?",
-      secondaryText: "We have you covered!",
-      url: "",
-    },
-    {
-      imgSrc: require("../Images/feed4.jpg"),
-      feedType: "LEARNING TIP",
-      publishedSinse: 18,
-      mainText: "Can you forget your first language",
-      secondaryText: "Here's what out exprts say!",
-      url: "",
-    },
-    {
-      imgSrc: require("../Images/feed1.jpg"),
-      feedType: "LEARNING TIP",
-      publishedSinse: 19,
-      mainText: "We're answering this question onse and for all:",
-      secondaryText: "can you learn a language in just 6 months?",
-      url: "",
-    },
-  ];
-  dispatch(setFeed(feed));
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -156,7 +150,7 @@ export default function StackNavigation() {
           component={FinishScreen}
           options={{ headerShown: false, gestureEnabled: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="NoHeartsScreen"
           component={NoHeartsScreen}
           options={{ headerShown: false, gestureEnabled: false }}
@@ -166,7 +160,6 @@ export default function StackNavigation() {
           component={CommingSoonScreen}
           options={{ headerShown: false, gestureEnabled: false }}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,6 +2,8 @@
   "expo": {
     "name": "DuoLingo",
     "slug": "DuoLingo",
+    "privacy": "public",
+    "description": "An application to learn new languages",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,16 +18,23 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "backgroundColor": "#ecf1f2"
+      "backgroundColor": "#ecf1f2",
+      "bundleIdentifier": "com.aleksg.DuoLingo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ecf1f2"
-      }
+      },
+      "package": "com.aleksg.DuoLingo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e2e4e1d-6c4f-4186-81f0-f834d6a311cc"
+      }
     }
   }
 }
