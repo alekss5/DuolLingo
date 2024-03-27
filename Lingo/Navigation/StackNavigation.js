@@ -65,65 +65,6 @@ export default function StackNavigation() {
   //   ]
   // },]
   dispatch(setLesson(lesson));
-  const userData = {
-    name: "Aleksandar Grigorov",
-    userName: "Aleksandar240902",
-    joinedDate: "2024-02-27",
-    hearts: 1,
-    points: 1000,
-    daysStreak: 5,
-    courses: [
-      { language: "DE", xp: 120 },
-      { language: "BG", xp: 0 },
-    ],
-    currentCourse: "DE",
-    totalXp: 500,
-  };
-
-  dispatch(loginUser(userData));
-  const homePathData = [
-    {
-      sectionNumber: 1,
-      sectionUnitNumber: 1,
-      sectionName: "Order in a Cafe",
-      lessonsCount: 5,
-      lessonId: [
-        { id: 1, index: 5 },
-        { id: 2, index: 5 },
-      ],
-    },
-    {
-      sectionNumber: 1,
-      sectionUnitNumber: 2,
-      sectionName: "Order in a Restaurant",
-      lessonsCount: 3,
-      lessonId: [
-        { id: 3, index: 3 },
-        { id: 4, index: 0 },
-        { id: 5, index: 0 },
-        { id: 6, index: 0 },
-        { id: 7, index: 0 },
-        { id: 8, index: 0 },
-      ],
-    },
-    {
-      sectionNumber: 1,
-      sectionUnitNumber: 3,
-      sectionName: " Walk i the park",
-      lessonsCount: 6,
-      lessonId: [
-        { id: 9, index: 0 },
-        { id: 10, index: 0 },
-        { id: 11, index: 0 },
-        { id: 12, index: 0 },
-        { id: 13, index: 0 },
-        { id: 14, index: 0 },
-      ],
-    },
-  ];
-
-  //const lastLesson = 3
-  dispatch(setHomePathData(homePathData));
 
   return (
     <NavigationContainer>

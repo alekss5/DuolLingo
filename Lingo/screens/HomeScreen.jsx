@@ -1,9 +1,6 @@
 import {
   StyleSheet,
   SafeAreaView,
-  View,
-  Touchable,
-  Vibration,
 } from "react-native";
 import { useState } from "react";
 import { GlobalStyles } from "../constants/Colors";
@@ -24,22 +21,21 @@ export default function HomeScreen({ navigation }) {
   function openHeartsModal() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setHeartsModal(true);
-    fetch("http://localhost:8080/auth/", {
-      method: "POST",
-      body: JSON.stringify({
-        name: "Aleksandar Grigorov",
-        userName: "Aleksandar240902",
-        email: "aleksndar305@gmail.com",
-        password: "5505667Sa",
-        currentCourse: "DE",
+    // fetch("http://localhost:8080/auth/", {
+    //   method: "PUT",
+    //   body: JSON.stringify({
+    //     name: "Aleksandar Grigorov",
+    //     email: "aleksndar3@gmail.com",
+    //     password: "5505667Sa",
+    //     currentCourse: "DE",
         
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+    //   }),
+    //   headers: {
+    //     "Content-type": "application/json; charset=UTF-8",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((json) => console.log(json));
   }
 
   function closeHeartsModal() {

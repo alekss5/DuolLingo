@@ -33,6 +33,7 @@ export default function HomeTestPath() {
   const hearts = useSelector(selectHearts);
 
   useEffect(() => {
+
     const sectionNames = homePathData.map((item) => item.sectionName);
 
     dispatch(
@@ -48,10 +49,10 @@ export default function HomeTestPath() {
   const renderIcons = () => {
     const icons = [];
     homePathData.forEach((item, index) => {
-      const { lessonId, sectionName } = item;
+      const { lessonIds = [], sectionName } = item;
       // setSectionName(item.sectionName)
 
-      for (let i = 0; i < lessonId.length; i++) {
+      for (let i = 0; i < lessonIds.length; i++) {
         const angle = index * (360 / 18) + i * (360 / 18);
         const radius = deviation * index;
 
@@ -60,11 +61,11 @@ export default function HomeTestPath() {
 
         icons.push(
           <TouchableOpacity
-            key={lessonId[i].id}
-            onPress={() => navigateToDetails(lessonId[i].id)}
-            disabled={lessonId[i].index === 0}
+            key={lessonIds[i]._id}
+            onPress={() => navigateToDetails(lessonIds[i]._id)}
+            disabled={lessonIds[i].index === 0}
           >
-            {lessonId[i].index === 5 ? (
+            {lessonIds[i].index === 5 ? (
               <MaterialCommunityIcons
                 name="check-circle-outline"
                 size={80}
@@ -82,7 +83,7 @@ export default function HomeTestPath() {
                 name="star-circle-outline"
                 size={80}
                 color={
-                  lessonId[i].index === 0
+                  lessonIds[i].index === 0
                     ? "grey"
                     : GlobalStyles.colors.succesGreen
                 }
@@ -97,7 +98,7 @@ export default function HomeTestPath() {
             )}
           </TouchableOpacity>
         );
-        if (i + 1 === lessonId.length) {
+        if (i + 1 === lessonIds.length) {
           const indexd = index + 1;
           icons.push(
             <Divider
@@ -124,6 +125,7 @@ export default function HomeTestPath() {
     } else {
       lightVibration();
       navigation.navigate("PlayScreen");
+
       //find the test from the database and add it to the redux store
     }
   };

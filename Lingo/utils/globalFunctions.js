@@ -1,5 +1,6 @@
 import { Audio } from 'expo-av';
 import SoundSource from './SoundSources';
+
 export function formatTimeFromMStoMin(elapsedTime) {
   const totalSeconds = Math.floor(elapsedTime / 1000);
   const minutes = Math.floor(totalSeconds / 60);
@@ -32,3 +33,17 @@ export const calculateDaysSince = (publishedDate) => {
 
   return diffDays;
 };
+
+export const convertDateFormat = (dateString) =>{
+  const dateObject = new Date(dateString);
+
+  // Get year, month, and date components
+  const year = dateObject.getFullYear();
+  const month = dateObject.getMonth() + 1; // Month is zero-based, so we add 1
+  const date = dateObject.getDate();
+
+  // Format the date in "YYYY-MM-DD" format
+  const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+
+  return formattedDate;
+}

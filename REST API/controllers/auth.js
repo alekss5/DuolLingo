@@ -1,8 +1,50 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-const User = require('../models/user');
+const User = require('../models/userSchema');
+const Language = require('../models/languageSchema');
+const section = require('../models/section');
+
+// exports.signup = async (req, res, next) => {
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     const error = new Error('Validation failed.');
+//     error.statusCode = 422;
+//     error.data = errors.array();
+//     throw error;
+//   }
+  
+//   const { email, name, password,currentCourse } = req.body;
+  
+//   try {
+//     const hashedPw = await bcrypt.hash(password, 12);
+
+//     const user = new User({
+//       email: email,
+//       password: hashedPw,
+//       name: name,
+//       userName:name+Math.random().toString(),
+      
+//       joinedDate: new Date(), 
+//       courses: [{
+//         language:currentCourse,
+//         xp:0
+//       }], 
+//       currentCourse: currentCourse,
+//       progress: [], //in the language chema find matching language with currentCourse and coppy the 0 item and set it here  
+//     });
+
+//     const result = await user.save(); 
+//     res.status(201).json({ message: 'User created!', userId: result._id });
+//   } catch (err) {
+//     if (!err.statusCode) {
+//       err.statusCode = 500;
+//     }
+//     next(err);
+//   }
+// };
 
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
@@ -12,20 +54,37 @@ exports.signup = async (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-  const email = req.body.email;
-  const name = req.body.name;
-  const password = req.body.password;
-  console.log(name)
+  
+  const { email, name, password, currentCourse } = req.body;
+  
   try {
     const hashedPw = await bcrypt.hash(password, 12);
 
+    const language = await Language.findOne({ language: currentCourse });
+    console.log(language.sections[0])
+    if (!language) {
+      throw new Error('Language not found');
+    }
+
+    const sectionsWithNumberOne = language.sections.filter(section => section.sectionNumber === 1);
+
+    console.log(sectionsWithNumberOne)
     const user = new User({
       email: email,
       password: hashedPw,
-      name: name
+      name: name,
+      userName: name + Math.random().toString().slice(2, 8),
+      joinedDate: new Date(), 
+      courses: [{
+        language: currentCourse,
+        xp: 0
+      }], 
+      currentCourse: currentCourse,
+      progress: sectionsWithNumberOne
+      
     });
-    console.log(user)
-   // const result = await user.save();
+
+    const result = await user.save(); 
     res.status(201).json({ message: 'User created!', userId: result._id });
   } catch (err) {
     if (!err.statusCode) {
@@ -34,6 +93,7 @@ exports.signup = async (req, res, next) => {
     next(err);
   }
 };
+
 
 exports.login = async (req, res, next) => {
   const email = req.body.email;
@@ -59,46 +119,11 @@ exports.login = async (req, res, next) => {
         userId: loadedUser._id.toString()
       },
       'privatekey',
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }
     );
-    res.status(200).json({ token: token, userId: loadedUser._id.toString() });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-};
 
-exports.getUserStatus = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.userId);
-    if (!user) {
-      const error = new Error('User not found.');
-      error.statusCode = 404;
-      throw error;
-    }
-    res.status(200).json({ status: user.status });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-};
 
-exports.updateUserStatus = async (req, res, next) => {
-  const newStatus = req.body.status;
-  try {
-    const user = await User.findById(req.userId);
-    if (!user) {
-      const error = new Error('User not found.');
-      error.statusCode = 404;
-      throw error;
-    }
-    user.status = newStatus;
-    await user.save();
-    res.status(200).json({ message: 'User updated.' });
+    res.status(200).json({ token: token, userData: loadedUser });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
