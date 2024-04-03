@@ -2,14 +2,26 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { selectHearts } from "../../redux/userReducer";
+import { selectHearts, selectHeartDecreaseTime } from "../../redux/userReducer";
 import PointsIconText from "../UI/PointsIconText";
 import { buyHearts } from "../../redux/userReducer";
 import { useNavigation } from "@react-navigation/native";
-export default function HeartsModalContent({heartIcons,closeModal}) {
-  const heartsCount = useSelector(selectHearts);
+
+export default function HeartsModalContent({ heartIcons, closeModal }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  const heartsCount = useSelector(selectHearts);
+  const heartsDecreaseTime = useSelector(selectHeartDecreaseTime);
+  const currentTime = new Date();
+  const timeElapsed = currentTime - new Date(heartsDecreaseTime);
+
+  const minutess = Math.floor(timeElapsed / (1000 * 60));
+  const hours = Math.floor(minutess / 60);
+
+  console.log(timeElapsed);
+  console.log(minutess);
+  console.log(hours);
 
   const renderIcons = () => {
     const heartIcons = [];
@@ -42,20 +54,25 @@ export default function HeartsModalContent({heartIcons,closeModal}) {
     dispatch(buyHearts());
   }
   function goPremium() {
-    closeModal()
-    navigation.navigate('CommingSoonScreen')
+    closeModal();
+    navigation.navigate("CommingSoonScreen");
   }
+
+  let nextHeartTime = <>Next Heart after {hours} hours</>;
+  if (hours === 0) {
+    nextHeartTime = <>Next Heart after {minutess} minutes</>;
+  }
+
   return (
     <View>
-      {heartIcons &&<View style={styles.heartsContainer}>{renderIcons()}</View>}
+      {heartIcons && (
+        <View style={styles.heartsContainer}>{renderIcons()}</View>
+      )}
       <Text style={styles.heartsCountText}>
         {" "}
-        {heartsCount === 5
-          ? " You have full hearts"
-          : "Next heart after 4 hours"}{" "}
+        {heartsCount === 5 ? " You have full hearts" : <>{nextHeartTime}</>}
       </Text>
       <Text style={{ textAlign: "center", marginTop: 10 }}>
-        {" "}
         Keep on learning
       </Text>
       <TouchableOpacity
@@ -82,25 +99,25 @@ export default function HeartsModalContent({heartIcons,closeModal}) {
         </View>
       </TouchableOpacity>
 
-<TouchableOpacity onPress={goPremium}>
-      <View style={[styles.buttonContainer, { backgroundColor: "blue" }]}>
-        <MaterialCommunityIcons
-          name="heart-plus"
-          size={20}
-          color="white"
-          style={{ padding: 4 }}
-        />
-        <Text
-          style={{
-            flex: 1,
-            padding: 5,
-            fontWeight: "bold",
-            color: "white",
-          }}
-        >
-          UNLIMITED HEARTS
-        </Text>
-      </View>
+      <TouchableOpacity onPress={goPremium}>
+        <View style={[styles.buttonContainer, { backgroundColor: "blue" }]}>
+          <MaterialCommunityIcons
+            name="heart-plus"
+            size={20}
+            color="white"
+            style={{ padding: 4 }}
+          />
+          <Text
+            style={{
+              flex: 1,
+              padding: 5,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            UNLIMITED HEARTS
+          </Text>
+        </View>
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <MaterialCommunityIcons

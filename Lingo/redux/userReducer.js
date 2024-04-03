@@ -9,6 +9,7 @@ const initialState = {
   isAuthenticated: false,
   token: null,
   hearts: null,
+  heartDecreaseTime:null,
   points: null,
   daysStreak: null,
   courses: [],
@@ -29,6 +30,7 @@ const userSlice = createSlice({
         joinedDate,
         token,
         hearts,
+        heartDecreaseTime,
         points,
         daysStreak,
         courses,
@@ -42,6 +44,8 @@ const userSlice = createSlice({
       state.joinedDate = joinedDate;
       state.token = token;
       state.hearts = hearts;
+      state.heartDecreaseTime = heartDecreaseTime;
+
       state.points = points;
       state.daysStreak = daysStreak;
       state.courses = courses;
@@ -49,6 +53,7 @@ const userSlice = createSlice({
       state.totalXp = totalXp;
       state.isAuthenticated = true;
       state.todayWinSteak = todayWinSteak;
+    
     },
     logoutUser: (state) => {
       Object.assign(state, initialState);
@@ -87,6 +92,7 @@ const userSlice = createSlice({
   },
 });
 
+
 export const { loginUser, logoutUser, decreceHearts, buyHearts, finish } =
   userSlice.actions;
 
@@ -94,6 +100,7 @@ export const selectName = (state) => state.user.name;
 export const selectUserName = (state) => state.user.userName;
 export const selectEmail = (state) => state.user.email;
 export const selectJoinedDate = (state) => state.user.joinedDate;
+export const selectHeartDecreaseTime = (state) => state.user.heartDecreaseTime;
 export const selectToken = (state) => state.user.token;
 export const selectHearts = (state) => state.user.hearts;
 export const selectPoints = (state) => state.user.points;

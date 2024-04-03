@@ -35,6 +35,7 @@ export default function FetchData() {
         userName: user.userName,
         email: user.email,
         joinedDate: convertDateFormat(user.joinedDate),
+        heartDecreaseTime:user.heartDecreaseTime,
         token:token,
         hearts: user.hearts,
         points: user.points,

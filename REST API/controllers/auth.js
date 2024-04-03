@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userSchema");
 const Language = require("../models/languageSchema");
 
+const MAX_HEARTS = 5;
+
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -74,6 +76,26 @@ exports.login = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
+    if (loadedUser.hearts < MAX_HEARTS) {
+      const currentTime = new Date();
+      const timePassed = currentTime - new Date(loadedUser.heartDecreaseTime);
+
+      const heartsToAdd = Math.floor(timePassed / (4 * 60 * 60 * 1000)); // Calculate hearts to add based on 4 hours
+
+      if (heartsToAdd > 5 || loadedUser.hearts + heartsToAdd > 5) {
+        loadedUser.hearts = 5;
+        loadedUser.heartDecreaseTime = null;
+      } else {
+        loadedUser.hearts += heartsToAdd;
+        const newHeartDecreaseTime = new Date(
+          loadedUser.heartDecreaseTime.getTime() +
+            4 * 60 * 60 * 1000 * heartsToAdd
+        );
+        loadedUser.heartDecreaseTime = newHeartDecreaseTime;
+      }
+      loadedUser.save();
+    }
+
     const token = jwt.sign(
       {
         email: loadedUser.email,
@@ -94,8 +116,8 @@ exports.login = async (req, res, next) => {
 };
 exports.decreaseHearts = async (req, res, next) => {
   const email = req.body.email;
-
   const user = await User.findOne({ email: email });
+
   if (!user) {
     const error = new Error("A user with this email could not be found.");
     error.statusCode = 401;
@@ -103,6 +125,10 @@ exports.decreaseHearts = async (req, res, next) => {
   }
 
   user.hearts -= 1;
+  if (user.heartDecreaseTime === null) {
+    user.heartDecreaseTime = new Date();
+  }
+
   await user.save();
 };
 

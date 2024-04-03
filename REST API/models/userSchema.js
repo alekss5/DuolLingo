@@ -39,6 +39,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 5,
+    max:5,
+    min:0,
   },
   points: {
     type: Number,
@@ -50,7 +52,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
-
+  heartDecreaseTime: {
+    type: Date,
+    default:null,
+  },
   courses: [courseSchema],
   currentCourse: {
     type: String,
@@ -61,9 +66,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
-  todayWinSteak:{
-
-    type:Boolean,
+  todayWinSteak: {
+    type: Boolean,
     required: true,
     default: false,
   },
