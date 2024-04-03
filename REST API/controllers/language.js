@@ -1,6 +1,5 @@
-const Language = require('../models/languageSchema');
-const Section = require('../models/section');
-
+const Language = require("../models/languageSchema");
+const Section = require("../models/section");
 
 exports.createLanguage = async (req, res) => {
   try {
@@ -12,7 +11,6 @@ exports.createLanguage = async (req, res) => {
   }
 };
 
-
 exports.getAllLanguages = async (req, res) => {
   try {
     const languages = await Language.find();
@@ -22,11 +20,22 @@ exports.getAllLanguages = async (req, res) => {
   }
 };
 
-
 exports.createSection = async (req, res) => {
   try {
-    const { sectionNumber, sectionUnitNumber, sectionName, lessonsCount, lessonIds } = req.body;
-    const newSection = await Section.create({ sectionNumber, sectionUnitNumber, sectionName, lessonsCount, lessonIds });
+    const {
+      sectionNumber,
+      sectionUnitNumber,
+      sectionName,
+      lessonsCount,
+      lessonIds,
+    } = req.body;
+    const newSection = await Section.create({
+      sectionNumber,
+      sectionUnitNumber,
+      sectionName,
+      lessonsCount,
+      lessonIds,
+    });
     res.status(201).json(newSection);
   } catch (error) {
     res.status(500).json({ message: error.message });

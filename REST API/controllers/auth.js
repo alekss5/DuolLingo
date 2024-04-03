@@ -1,11 +1,9 @@
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 
 const User = require("../models/userSchema");
 const Language = require("../models/languageSchema");
-const section = require("../models/section");
 
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
@@ -84,6 +82,7 @@ exports.login = async (req, res, next) => {
       "privatekey",
       { expiresIn: "30d" }
     );
+    console.log("user logged in successfully");
 
     res.status(200).json({ token: token, userData: loadedUser });
   } catch (err) {

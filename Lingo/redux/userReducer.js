@@ -7,6 +7,7 @@ const initialState = {
   joinedDate: null,
   userProfile: null,
   isAuthenticated: false,
+  token: null,
   hearts: null,
   points: null,
   daysStreak: null,
@@ -26,6 +27,7 @@ const userSlice = createSlice({
         userName,
         email,
         joinedDate,
+        token,
         hearts,
         points,
         daysStreak,
@@ -38,6 +40,7 @@ const userSlice = createSlice({
       state.userName = userName;
       state.email = email;
       state.joinedDate = joinedDate;
+      state.token = token;
       state.hearts = hearts;
       state.points = points;
       state.daysStreak = daysStreak;
@@ -91,6 +94,7 @@ export const selectName = (state) => state.user.name;
 export const selectUserName = (state) => state.user.userName;
 export const selectEmail = (state) => state.user.email;
 export const selectJoinedDate = (state) => state.user.joinedDate;
+export const selectToken = (state) => state.user.token;
 export const selectHearts = (state) => state.user.hearts;
 export const selectPoints = (state) => state.user.points;
 export const selectDaysStreak = (state) => state.user.daysStreak;

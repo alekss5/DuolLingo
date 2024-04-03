@@ -4,6 +4,7 @@ const { body } = require("express-validator");
 const User = require("../models/userSchema");
 
 const authController = require("../controllers/auth");
+const isAuth = require("../middleware/is-auth");
 
 router.put(
   "/",
@@ -23,7 +24,7 @@ router.put(
   authController.signup
 );
 router.post('/', authController.login)
-router.post('/decreaseHears', authController.decreaseHearts)//isAuth  
-router.post('/stackAndPoints', authController.updateStackAndPoints) //isAuth 
+router.post('/decreaseHears',isAuth, authController.decreaseHearts)
+router.post('/stackAndPoints',isAuth, authController.updateStackAndPoints) 
 
 module.exports = router;

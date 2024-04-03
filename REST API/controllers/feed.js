@@ -10,6 +10,7 @@ const feedController = {
       res.status(500).json({ error: err.message });
     }
   },
+
   getAllFeed: async (req, res) => {
     try {
       const feeds = await Feed.find();
@@ -18,6 +19,7 @@ const feedController = {
       res.status(500).json({ error: error.message });
     }
   },
+
   deleteFeedById: async (req, res) => {
     const feedId = req.params.id;
     try {

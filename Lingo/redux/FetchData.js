@@ -1,21 +1,21 @@
-import { Text } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFeed, setFeed } from "./feedReducer";
-import { selectUserName } from "./userReducer";
+import {  setFeed } from "./feedReducer";
+import { selectToken, selectUserName } from "./userReducer";
 import { convertDateFormat } from "../utils/globalFunctions";
 import { setHomePathData } from "./homePathReducer";
 import { loginUser } from "./userReducer";
 const { fetchFeed, postLoginUser } = require("../utils/http");
 
 export default function FetchData() {
-  const feed = useSelector(selectFeed);
   const userName = useSelector(selectUserName);
   const dispatch = useDispatch();
 
+  const token = useSelector(selectToken)
+
   const setFetchedFeed = async () => {
     try {
-      const response = await fetchFeed();
+      const response = await fetchFeed({token});
       dispatch(setFeed(response));
     } catch (e) {
       console.log(e);
@@ -35,6 +35,7 @@ export default function FetchData() {
         userName: user.userName,
         email: user.email,
         joinedDate: convertDateFormat(user.joinedDate),
+        token:token,
         hearts: user.hearts,
         points: user.points,
         daysStreak: user.daysStreak,

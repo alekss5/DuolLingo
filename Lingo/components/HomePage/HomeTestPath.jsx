@@ -17,7 +17,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "react-native-paper";
 import { hardVibration, lightVibration } from "../../utils/vibrationPaterns";
-import { selectHearts } from "../../redux/userReducer";
+import { selectHearts, selectToken } from "../../redux/userReducer";
 import { getLessonById } from "../../utils/http";
 import { setLesson } from "../../redux/lessonReducer";
 
@@ -33,6 +33,7 @@ export default function HomeTestPath() {
 
   const homePathData = useSelector(selectHomePathData);
   const hearts = useSelector(selectHearts);
+  const token = useSelector(selectToken)
 
   useEffect(() => {
     const sectionNames = homePathData.map((item) => item.sectionName);
@@ -126,7 +127,7 @@ export default function HomeTestPath() {
     } else {
       lightVibration();
 
-      const lesson = await getLessonById({ lessonId: id });
+      const lesson = await getLessonById({ lessonId: id,token:token });
       dispatch(setLesson(lesson.data));
 
       navigation.navigate("PlayScreen");

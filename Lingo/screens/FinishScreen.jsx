@@ -13,7 +13,7 @@ import LottieView from "lottie-react-native";
 import Animation from "../Images/Animation.json";
 import { formatTimeFromMStoMin } from "../utils/globalFunctions";
 import { useDispatch, useSelector } from "react-redux";
-import { finish } from "../redux/userReducer";
+import { finish, selectToken } from "../redux/userReducer";
 import { successVibration } from "../utils/vibrationPaterns";
 import { updateDayStackAndPoints } from "../utils/http";
 import { selectEmail } from "../redux/userReducer";
@@ -22,6 +22,7 @@ export default function FinishScreen({ navigation, route }) {
   const dispatch = useDispatch();
 
   const userEmail = useSelector(selectEmail)
+  const token = useSelector(selectToken)
 
   const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } =
     route.params;
@@ -55,9 +56,8 @@ export default function FinishScreen({ navigation, route }) {
 
     animateProgress();
     
-
     dispatch(finish({ xp: pointsEarned }));
-    updateDayStackAndPoints({email :userEmail,points:pointsEarned})
+    updateDayStackAndPoints({email :userEmail,points:pointsEarned,token:token})
   }, []);
 
   const animate = (animatedValue, toValue, duration) => {

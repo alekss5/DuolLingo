@@ -9,10 +9,13 @@ const api = axios.create({
   baseURL,
 });
 
-export const fetchFeed = async () => {
+export const fetchFeed = async ({token}) => {
   try {
-    const feed = await api.get("feed/");
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const feed = await api.get("feed/", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     return feed.data;
   } catch (e) {
     console.log(e.message);
@@ -28,27 +31,42 @@ export const postLoginUser = async ({ email, password }) => {
   }
 };
 
-export const getLessonById = async ({ lessonId }) => {
+export const getLessonById = async ({ lessonId,token }) => {
   try {
-    const lesson = await api.get(`lessons/${lessonId}`);
+ 
+    const lesson = await api.get(`lessons/${lessonId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  
+   
     return lesson.data;
   } catch (e) {
     console.log(e.message);
   }
 };
 
-export const decreceHeartsAsync = async ({email}) => {
+export const decreceHeartsAsync = async ({email,token}) => {
   try {
-    await api.post(`auth/decreaseHears`, { email });
+    await api.post(`auth/decreaseHears`, { email }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
   } catch (e) {
     console.log(e.message);
   }
 };
 
-export const updateDayStackAndPoints = async ({email,points}) => {
+export const updateDayStackAndPoints = async ({email,points,token}) => {
     try {
-      await api.post(`auth/stackAndPoints`, { email,points });
+      await api.post(`auth/stackAndPoints`, { email,points }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
     } catch (e) {
       console.log(e.message);
     }
