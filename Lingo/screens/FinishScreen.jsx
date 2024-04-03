@@ -12,12 +12,17 @@ import ProgresSegment from "../components/UI/ProgresSegment";
 import LottieView from "lottie-react-native";
 import Animation from "../Images/Animation.json";
 import { formatTimeFromMStoMin } from "../utils/globalFunctions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { finish } from "../redux/userReducer";
 import { successVibration } from "../utils/vibrationPaterns";
+import { updateDayStackAndPoints } from "../utils/http";
+import { selectEmail } from "../redux/userReducer";
 
 export default function FinishScreen({ navigation, route }) {
   const dispatch = useDispatch();
+
+  const userEmail = useSelector(selectEmail)
+
   const { elapsedTime, totalCorrectAnswers, totalQuestionsCount } =
     route.params;
   const { minutes, seconds } = formatTimeFromMStoMin(elapsedTime);
@@ -32,6 +37,7 @@ export default function FinishScreen({ navigation, route }) {
   const percentageCorrect =
     ((totalCorrectAnswers + 1) / totalQuestionsCount) * 100;
   const scorePercentage = Math.round(percentageCorrect);
+  const pointsEarned =Math.round(120 * (scorePercentage / 100))
   useEffect(() => {
     const animateProgress = () => {
       Animated.sequence([
@@ -48,8 +54,10 @@ export default function FinishScreen({ navigation, route }) {
     };
 
     animateProgress();
+    
 
-    dispatch(finish({ xp: Math.round(120 * (scorePercentage / 100)) }));
+    dispatch(finish({ xp: pointsEarned }));
+    updateDayStackAndPoints({email :userEmail,points:pointsEarned})
   }, []);
 
   const animate = (animatedValue, toValue, duration) => {
@@ -98,7 +106,7 @@ export default function FinishScreen({ navigation, route }) {
               title="Total XP"
               color="#ffc800"
               icon="star-four-points-outline"
-              score={30}
+              score={pointsEarned}
               dealay={350}
             />
           </Animated.View>

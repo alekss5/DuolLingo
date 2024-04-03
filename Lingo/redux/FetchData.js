@@ -24,7 +24,7 @@ export default function FetchData() {
   const setFetchedUser = async () => {
     try {
       const response = await postLoginUser({
-        email: "aleksndar3@gmail.com",
+        email: "aleksndar305@gmail.com",
         password: "5505667Sa",
       });
       const token = response.token;
@@ -33,6 +33,7 @@ export default function FetchData() {
       const userData = {
         name: user.name,
         userName: user.userName,
+        email: user.email,
         joinedDate: convertDateFormat(user.joinedDate),
         hearts: user.hearts,
         points: user.points,

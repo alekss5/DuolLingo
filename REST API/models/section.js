@@ -23,7 +23,7 @@ const sectionSchema = new mongoose.Schema({
         _id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "lessons",
-          required: true,
+
         },
         index: {
           type: Number,

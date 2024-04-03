@@ -23,5 +23,7 @@ router.put(
   authController.signup
 );
 router.post('/', authController.login)
+router.post('/decreaseHears', authController.decreaseHearts)//isAuth  
+router.post('/stackAndPoints', authController.updateStackAndPoints) //isAuth 
 
 module.exports = router;

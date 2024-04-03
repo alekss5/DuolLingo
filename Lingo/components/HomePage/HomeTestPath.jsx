@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "react-native-paper";
 import { hardVibration, lightVibration } from "../../utils/vibrationPaterns";
 import { selectHearts } from "../../redux/userReducer";
+import { getLessonById } from "../../utils/http";
+import { setLesson } from "../../redux/lessonReducer";
 
 export default function HomeTestPath() {
   const navigation = useNavigation();
@@ -33,7 +35,6 @@ export default function HomeTestPath() {
   const hearts = useSelector(selectHearts);
 
   useEffect(() => {
-
     const sectionNames = homePathData.map((item) => item.sectionName);
 
     dispatch(
@@ -118,12 +119,16 @@ export default function HomeTestPath() {
     return icons;
   };
 
-  const navigateToDetails = (id) => {
+  const navigateToDetails = async (id) => {
     if (hearts === 0) {
       hardVibration();
       navigation.navigate("NoHeartsScreen");
     } else {
       lightVibration();
+
+      const lesson = await getLessonById({ lessonId: id });
+      dispatch(setLesson(lesson.data));
+
       navigation.navigate("PlayScreen");
 
       //find the test from the database and add it to the redux store

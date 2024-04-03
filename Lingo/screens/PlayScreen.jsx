@@ -8,7 +8,7 @@ import ContinueButtonVew from "../components/PlayPage/ContinueButtonVew";
 import { useDispatch, useSelector } from "react-redux";
 import Timer from "../utils/Timer";
 import { selectLessons } from "../redux/lessonReducer";
-import { selectHearts } from "../redux/userReducer";
+import { selectHearts,selectEmail } from "../redux/userReducer";
 import { decreceHearts } from "../redux/userReducer";
 import CustomModal from "../components/UI/CustomModal";
 import SwingAnimation from "../Images/SwingAnimation.json";
@@ -19,12 +19,15 @@ import {
   successVibration,
   warningVibration,
 } from "../utils/vibrationPaterns";
+import { decreceHeartsAsync } from "../utils/http";
 
 export default function PlayScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const lessons = useSelector(selectLessons);
   const hearts = useSelector(selectHearts);
+  const userEmail = useSelector(selectEmail);
+
 
   const elapsedTime = useRef(0);
 
@@ -60,11 +63,11 @@ export default function PlayScreen({ navigation }) {
     [countButtonPressed, currentLessonIndex, lessons]
   );
 
+
   const handleContinuePress = useCallback(() => {
     setCountIsButtonPressed(countButtonPressed + 1);
   }, [countButtonPressed]);
 
-  console.log("render");
   const handleTimerUpdate = useCallback((timeElapsed) => {
     elapsedTime.current = timeElapsed;
   }, []);
@@ -101,6 +104,7 @@ export default function PlayScreen({ navigation }) {
         setTotalCorrectAnswers((countAnswers) => countAnswers + 1);
       } else {
         dispatch(decreceHearts());
+        decreceHeartsAsync({email:userEmail})
         if (hearts === 0) {
           navigation.navigate("NoHeartsScreen");
           return;

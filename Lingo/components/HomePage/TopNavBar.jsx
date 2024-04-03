@@ -15,10 +15,8 @@ import {
   selectPoints,
   selectDaysStreak,
 } from "../../redux/userReducer";
-import { useNavigation } from "@react-navigation/native";
 
 export default function TopNavBar({openHeartsModal}) {
-  const navigaton = useNavigation();
   const language = useSelector(selectCurrentCourse);
   const hearts = useSelector(selectHearts);
   const points = useSelector(selectPoints);

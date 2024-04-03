@@ -1,31 +1,23 @@
-import {
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { useState } from "react";
 import { GlobalStyles } from "../constants/Colors";
 import TopNavBar from "../components/HomePage/TopNavBar";
 import CurrentLestonBanner from "../components/HomePage/CurrentLestonBanner";
 import HomeTestPath from "../components/HomePage/HomeTestPath";
 import HeartsModal from "../components/Modals/HeartsModal";
-import * as Haptics from "expo-haptics";
+import { mediumVibration } from "../utils/vibrationPaterns";
 
 export default function HomeScreen({ navigation }) {
   const [heartsModal, setHeartsModal] = useState(false);
 
-  const options = {
-    enableVibrateFallback: true,
-    ignoreAndroidSystemSettings: false,
-  };
-
   function openHeartsModal() {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+   mediumVibration()
     setHeartsModal(true);
     // fetch("http://localhost:8080/auth/", {
     //   method: "PUT",
     //   body: JSON.stringify({
     //     name: "Aleksandar Grigorov",
-    //     email: "aleksndar3@gmail.com",
+    //     email: "aleksndar305@gmail.com",
     //     password: "5505667Sa",
     //     currentCourse: "DE",
         

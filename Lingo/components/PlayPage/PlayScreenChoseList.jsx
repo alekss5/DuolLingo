@@ -1,18 +1,16 @@
 import { StyleSheet, View } from "react-native";
 import PlayScreenCard from "./PlayScreenCard";
 import ImageSource from "../../utils/ImageSources";
-
 export default function PlayScreenChoseList({
   pressedCard,
   handleCardPress,
   lesson,
 }) {
-console.log('renderList')
-
   return (
+   
     <>
       <View style={styles.cardContainer}>
-        {lesson?.choises.map((choice, index) => (
+        {lesson?.choices.map((choice, index) => (
           <PlayScreenCard
             key={index}
             src={ImageSource.getImageSource(choice.icon)}

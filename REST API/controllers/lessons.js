@@ -5,6 +5,7 @@ const lessonsController = {
   createLesson: async (req, res) => {
     const sectionName = req.body.section;
     const language = req.body.language;
+    console.log(sectionName);
 
     try {
       if (!req.body || !req.body.data) {
@@ -12,23 +13,22 @@ const lessonsController = {
       }
 
       const data = req.body.data;
-      console.log(data[0].choices); 
-      console.log(data[0].choices[0].text); 
 
-      const lesson = new LessonsCollection({ data:data });
+      const lesson = new LessonsCollection({ data: data });
       await lesson.save();
       const lessonId = lesson._id;
 
       console.log(lessonId);
 
-      // Update the language object
       const result = await languageSchema.updateOne(
         { language: language, "sections.sectionName": sectionName },
         {
-          $push: { "sections.$.lessonIds": lessonId },
+          $push: { "sections.$.lessonIds": { _id: lessonId } },
           $inc: { "sections.$.lessonsCount": 1 },
         }
       );
+
+      console.log(result);
 
       if (result.nModified === 0) {
         throw new Error(
@@ -59,6 +59,7 @@ const lessonsController = {
   getLessonById: async (req, res) => {
     try {
       const lesson = await LessonsCollection.findById(req.params.id);
+
       if (!lesson) {
         return res.status(404).json({ message: "Lesson not found" });
       }

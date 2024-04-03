@@ -2,27 +2,17 @@ import React, { useRef, useEffect } from "react";
 import {
   Modal,
   StyleSheet,
-  Text,
   View,
   TouchableWithoutFeedback,
   Animated,
-  TouchableOpacity,
 } from "react-native";
-import { Divider } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { selectHearts } from "../../redux/userReducer";
-import PointsIconText from "../UI/PointsIconText";
-import { buyHearts } from "../../redux/userReducer";
+
 import HeartsModalContent from "./HeartsModalContent";
 export default function HeartsModal({ isModalOpen, closeModal }) {
   const slideAnim = useRef(new Animated.Value(-100)).current;
-  const heartsCount = useSelector(selectHearts);
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isModalOpen) {
-      console.log("Modal open");
       Animated.timing(slideAnim, {
         toValue: 0,
         duration: 300,
@@ -57,7 +47,7 @@ export default function HeartsModal({ isModalOpen, closeModal }) {
           },
         ]}
       >
-       <HeartsModalContent heartIcons={true} closeModal={closeModal}/>
+        <HeartsModalContent heartIcons={true} closeModal={closeModal} />
       </Animated.View>
       <TouchableWithoutFeedback onPress={closeModal}>
         <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
@@ -96,8 +86,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  pressbleContainer:{
-    minWidth:"90%"
+  pressbleContainer: {
+    minWidth: "90%",
   },
   buttonContainer: {
     marginTop: 15,

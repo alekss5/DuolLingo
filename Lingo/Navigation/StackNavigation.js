@@ -64,7 +64,7 @@ export default function StackNavigation() {
   //     { word: "Bred", choices: ["Bier", "Tea", "Milk", "Bred"] },
   //   ]
   // },]
-  dispatch(setLesson(lesson));
+  //dispatch(setLesson(lesson));
 
   return (
     <NavigationContainer>

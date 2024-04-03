@@ -7,6 +7,9 @@ export const hardVibration = () => {
 export const lightVibration = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 };
+export const mediumVibration = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+};
 
 export const successVibration = () => {
   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

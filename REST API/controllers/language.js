@@ -1,7 +1,7 @@
 const Language = require('../models/languageSchema');
 const Section = require('../models/section');
 
-// Controller for creating a new language
+
 exports.createLanguage = async (req, res) => {
   try {
     const { language, sections } = req.body;
@@ -12,7 +12,7 @@ exports.createLanguage = async (req, res) => {
   }
 };
 
-// Controller for getting all languages
+
 exports.getAllLanguages = async (req, res) => {
   try {
     const languages = await Language.find();
@@ -22,7 +22,7 @@ exports.getAllLanguages = async (req, res) => {
   }
 };
 
-// Controller for creating a new section
+
 exports.createSection = async (req, res) => {
   try {
     const { sectionNumber, sectionUnitNumber, sectionName, lessonsCount, lessonIds } = req.body;
