@@ -18,53 +18,7 @@ import CommingSoonScreen from "../screens/CommingSoonScreen";
 const Stack = createStackNavigator();
 
 export default function StackNavigation() {
-  const dispatch = useDispatch();
-  const lesson = [
-    {
-      word: "Beer",
-      choises: [
-        { text: "Milch", icon: "Milk" },
-        { text: "Tee", icon: "Tea" },
-        { text: "Brot", icon: "Bread" },
-        { text: "Bier", icon: "Beer" },
-      ],
-    },
-    {
-      word: "Milk",
-      choises: [
-        { text: "Bier", icon: "Beer" },
-        { text: "Milch", icon: "Milk" },
-        { text: "Brot", icon: "Bread" },
-        { text: "Tee", icon: "Tea" },
-      ],
-    },
-    {
-      word: "Bread",
-      choises: [
-        { text: "Milch", icon: "Milk" },
-        { text: "Bier", icon: "Beer" },
-        { text: "Tee", icon: "Tea" },
-        { text: "Brot", icon: "Bread" },
-      ],
-    },
-  ];
-  // const lessons = [{
-  //   id: 1,
-  //   data: [
-  //     { word: "Bier", choices: ["milk", "Tea", "Bred", "Bier"] },
-  //     { word: "Milk", choices: ["Bier", "Tea", "Bred", "Milk"] },
-  //     { word: "Bred", choices: ["Bier", "Tea", "Milk", "Bred"] },
-  //   ]
-  // },
-  //{
-  //id: 2,
-  //   data: [
-  //     { word: "Bier", choices: ["milk", "Tea", "Bred", "Bier"] },
-  //     { word: "Milk", choices: ["Bier", "Tea", "Bred", "Milk"] },
-  //     { word: "Bred", choices: ["Bier", "Tea", "Milk", "Bred"] },
-  //   ]
-  // },]
-  //dispatch(setLesson(lesson));
+  
 
   return (
     <NavigationContainer>

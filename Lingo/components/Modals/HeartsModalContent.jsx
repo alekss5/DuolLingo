@@ -16,8 +16,8 @@ export default function HeartsModalContent({ heartIcons, closeModal }) {
   const currentTime = new Date();
   const timeElapsed = currentTime - new Date(heartsDecreaseTime);
 
-  const minutess = Math.floor(timeElapsed / (1000 * 60));
-  const hours = Math.floor(minutess / 60);
+  const minutess =  240 - Math.floor(timeElapsed / (1000 * 60));
+  const hours =  Math.floor(minutess / 60);
 
   console.log(timeElapsed);
   console.log(minutess);

@@ -34,7 +34,7 @@ export default function HomeTestPath() {
   const homePathData = useSelector(selectHomePathData);
   const hearts = useSelector(selectHearts);
   const token = useSelector(selectToken)
-
+  
   useEffect(() => {
     const sectionNames = homePathData.map((item) => item.sectionName);
 
@@ -126,13 +126,9 @@ export default function HomeTestPath() {
       navigation.navigate("NoHeartsScreen");
     } else {
       lightVibration();
-
       const lesson = await getLessonById({ lessonId: id,token:token });
       dispatch(setLesson(lesson.data));
-
       navigation.navigate("PlayScreen");
-
-      //find the test from the database and add it to the redux store
     }
   };
 

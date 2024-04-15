@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
+  
     padding: 10,
 
     width: "100%",
