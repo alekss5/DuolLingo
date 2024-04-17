@@ -11,20 +11,21 @@ router.put(
   [
     body("email", "Enter a valid email address")
       .isEmail()
-      .custom(async (value,) => {
+      .custom(async (value) => {
         const userDoc = await User.findOne({ email: value });
         if (userDoc) {
           return Promise.reject("Email already exists");
         }
       })
-      .normalizeEmail(),
+      .normalizeEmail()
+      .customSanitizer((value) => value.toLowerCase()),
     body("password").trim().isLength({ min: 5 }),
     body("name").trim().not().isEmpty().isLength({ min: 2 }),
   ],
   authController.signup
 );
-router.post('/', authController.login)
-router.post('/decreaseHears',isAuth, authController.decreaseHearts)
-router.post('/stackAndPoints',isAuth, authController.updateStackAndPoints) 
+router.post("/",authController.login);
+router.post("/decreaseHears", isAuth, authController.decreaseHearts);
+router.post("/stackAndPoints", isAuth, authController.updateStackAndPoints);
 
 module.exports = router;
