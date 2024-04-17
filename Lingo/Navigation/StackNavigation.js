@@ -14,15 +14,30 @@ import { loginUser } from "../redux/userReducer";
 import { setHomePathData } from "../redux/homePathReducer";
 import NoHeartsScreen from "../screens/NoHeartsScreen";
 import CommingSoonScreen from "../screens/CommingSoonScreen";
+import { getUserData,saveUserData } from "../realm/actions";
+import LoginScreen from "../screens/LoginScreen";
+
 
 const Stack = createStackNavigator();
 
-export default function StackNavigation() {
+export default function StackNavigation({isUserLoggedin}) {
+
+  // //   saveUserData("aleksndar305@gmail.com", "5505667Sa");
+
+  // const handleGetUserData = async () => {
+  //   // Call getUserData function to retrieve user data
+  //   const userData = await getUserData();
+  //   console.log("User data:", userData);
+  // };
   
+  // // Example usage of handleGetUserData function
+  // handleGetUserData();
+  console.log(isUserLoggedin)
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
+     {!isUserLoggedin && <Stack.Screen name='Login' component={LoginScreen}/>}
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabsNavigation}

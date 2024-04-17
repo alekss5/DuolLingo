@@ -13,13 +13,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#79c485"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "backgroundColor": "#ecf1f2",
-      "bundleIdentifier": "com.aleksg.DuoLingo"
+      "bundleIdentifier": "com.aleksg.DuoLingo",
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": true
+      }
     },
     "android": {
       "adaptiveIcon": {

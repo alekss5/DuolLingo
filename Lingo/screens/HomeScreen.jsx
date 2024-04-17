@@ -7,6 +7,7 @@ import HomeTestPath from "../components/HomePage/HomeTestPath";
 import HeartsModal from "../components/Modals/HeartsModal";
 import { mediumVibration } from "../utils/vibrationPaterns";
 
+
 export default function HomeScreen({ navigation }) {
   const [heartsModal, setHeartsModal] = useState(false);
 

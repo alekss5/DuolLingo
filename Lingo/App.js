@@ -1,36 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
+import { User } from "./realm/UserSchema";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import StackNavigation from "./Navigation/StackNavigation";
-import FetchData from "./redux/FetchData";
-import { useState } from "react";
-import SplashScreen from "./screens/SplashScreen";
-import Animated, { FadeIn } from "react-native-reanimated";
-import { FadeOut } from "react-native-reanimated";
+import { RealmProvider } from "@realm/react";
+import AppContend from "./AppContend";
 
 export default function App() {
-  const [isSplashActive, isDataFetched] = useState(false);
-
   return (
-    <>
-  
+    <RealmProvider schema={[User]}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <StatusBar style="dark" />
-          {!isSplashActive ? (
-           <>
-           <SplashScreen />
-            <FetchData isDataFetched={isDataFetched} />
-           </>
-      
-          ) : (
-            <Animated.View entering={FadeIn} style={{flex:1}}>
-              <StackNavigation />
-            </Animated.View>
-          )}
+          <AppContend />
         </PersistGate>
       </Provider>
-    </>
+    </RealmProvider>
   );
 }

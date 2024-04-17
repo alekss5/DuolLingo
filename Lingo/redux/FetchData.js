@@ -5,13 +5,13 @@ import { selectToken, selectUserName } from "./userReducer";
 import { convertDateFormat } from "../utils/globalFunctions";
 import { setHomePathData } from "./homePathReducer";
 import { loginUser } from "./userReducer";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 import * as SplashScreen from "expo-splash-screen";
 
 const { fetchFeed, postLoginUser } = require("../utils/http");
 
-export default function FetchData({ isDataFetched }) {
+export default function FetchData({ isDataFetched,email,password }) {
   SplashScreen.preventAutoHideAsync();
 
   const [isDataFetching, setIsDataFetching] = useState(true);
@@ -21,7 +21,7 @@ export default function FetchData({ isDataFetched }) {
 
   const token = useSelector(selectToken);
 
-setTimeout(() => {
+  setTimeout(() => {
     setTimeoutPassed(true);
   }, 4000);
 
@@ -29,9 +29,12 @@ setTimeout(() => {
     const fetchData = async () => {
       try {
         // Fetch user data
+   
+        
+        const lowerEmail = email.toLowerCase();
         const userResponse = await postLoginUser({
-          email: "aleksndar305@gmail.com",
-          password: "5505667Sa",
+          email: lowerEmail,
+          password: password,
         });
 
         // Fetch feed data
@@ -72,11 +75,9 @@ setTimeout(() => {
     };
 
     fetchData();
-  }, []);
+  }, [email,password]);
 
   useEffect(() => {
-    console.log(isDataFetching);
-    console.log(isTimeoutPassed);
     // Trigger isDataFetched when data fetching is complete and timeout has passed
     if (!isDataFetching && isTimeoutPassed) {
       isDataFetched(true);
