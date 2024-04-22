@@ -40,6 +40,7 @@ export default function BottomTabsNavigation() {
           title: "HomeScreen",
           tabBarLabel: "Home",
           headerShown: false,
+          
 
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="home" size={size} color={color} />

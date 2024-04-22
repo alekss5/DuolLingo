@@ -17,7 +17,9 @@ export const GlobalStyles = {
     errorLightRed:'#ffdfe0',
 
 
+    iosBlue:'#007AFF',
     gray:'gray',
+    ligthGray:"#F2F2F2",
     black: "#ffffff",
     white: "#020202",
   },

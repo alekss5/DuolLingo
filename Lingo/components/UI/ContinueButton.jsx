@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { GlobalStyles } from "../../constants/Colors";
 import { Button } from "react-native-paper";
 export default function ContinueButton({ isPressedCard, submitAnswer,color }) {
   return (

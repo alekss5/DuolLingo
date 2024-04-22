@@ -8,40 +8,30 @@ import FinishScreen from "../screens/FinishScreen";
 
 import AddFrendsModal from "../components/Modals/AddFrendsModal";
 import HeartsModal from "../components/Modals/HeartsModal";
-import { useDispatch } from "react-redux";
-import { setLesson } from "../redux/lessonReducer";
-import { loginUser } from "../redux/userReducer";
-import { setHomePathData } from "../redux/homePathReducer";
 import NoHeartsScreen from "../screens/NoHeartsScreen";
 import CommingSoonScreen from "../screens/CommingSoonScreen";
-import { getUserData,saveUserData } from "../realm/actions";
 import LoginScreen from "../screens/LoginScreen";
-
+import StartRegisterPage from "../screens/StartRegisterScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import { GlobalStyles } from "../constants/Colors";
 
 const Stack = createStackNavigator();
 
-export default function StackNavigation({isUserLoggedin}) {
-
-  // //   saveUserData("aleksndar305@gmail.com", "5505667Sa");
-
-  // const handleGetUserData = async () => {
-  //   // Call getUserData function to retrieve user data
-  //   const userData = await getUserData();
-  //   console.log("User data:", userData);
-  // };
-  
-  // // Example usage of handleGetUserData function
-  // handleGetUserData();
-  console.log(isUserLoggedin)
-
+export default function StackNavigation({ isUserLoggedin }) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-     {!isUserLoggedin && <Stack.Screen name='Login' component={LoginScreen}/>}
+        {!isUserLoggedin && (
+          <Stack.Screen
+            name="haveAcount"
+            component={StartRegisterPage}
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
+        )}
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabsNavigation}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen name="addFrendModal" component={AddFrendsModal} />
         <Stack.Screen name="heartsModal" component={HeartsModal} />
@@ -69,6 +59,21 @@ export default function StackNavigation({isUserLoggedin}) {
           name="CommingSoonScreen"
           component={CommingSoonScreen}
           options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerBackTitle: " ",
+            gestureEnabled: false,
+            headerTitle: "Enter your details",
+            headerTitleStyle: { color: GlobalStyles.colors.gray, fontSize: 18 },
+          }}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -25,7 +25,7 @@ export const fetchFeed = async ({token}) => {
 export const postLoginUser = async ({ email, password }) => {
   try {
     const user = await api.post("auth/", { email, password });
-    return user.data;
+    return user;
   } catch (e) {
     console.log(e.message);
   }

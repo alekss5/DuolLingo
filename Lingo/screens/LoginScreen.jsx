@@ -1,75 +1,134 @@
-import React, { useState,useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import React, { useEffect, useState } from "react";
 
-import {BSON} from 'realm';
-import {useRealm} from '@realm/react';
-import { UserSchema } from '../realm/UserSchema';
+import { StyleSheet, Text, TextInput, SafeAreaView, View } from "react-native";
+import { Button } from "react-native-paper";
+import { BSON } from "realm";
+import { useRealm } from "@realm/react";
+import { GlobalStyles } from "../constants/Colors";
+import { postLoginUser } from "../utils/http";
 
- import { RealmContext } from "../realm/UserSchema";
+export default function LoginScreen({ navigation }) {
+  const realm = useRealm();
 
-export default function LoginScreen({navigation}) {
-    const realm = useRealm();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [errorText, setErrorText] = useState("");
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  useEffect(() => {
+    setIsButtonDisabled(email === "" || password === "");
+  }, [email, password]);
 
-
-  const handleLogin = () => {
-    realm.write(() => {
-        realm.create('User', {
-          _id: new BSON.ObjectId(),
-          email: email,
-          password: password
-        });
-      // realm.deleteAll()
+  const handleLogin = async () => {
+    if (!isValidEmail(email)) {
+      setErrorText("Invalid email");
+    } else {
+      const loginUser = await postLoginUser({
+        email: email.toLocaleLowerCase(),
+        password: password,
       });
+      if (loginUser.status === 200) {
+        realm.write(() => {
+          realm.deleteAll();
 
-
-
-
-    // Here you can implement your login logic, for demonstration purposes, let's just show an alert with the entered credentials
-    // Alert.alert('Login', `Username: ${email}\nPassword: ${password}`);
-    navigation.navigate('BottomTabs')
+          realm.create("User", {
+            _id: new BSON.ObjectId(),
+            email: email,
+            password: password,
+          });
+        });
+        navigation.navigate("BottomTabs");
+      } else {
+        setErrorText("Invalid email or password");
+      }
+    }
   };
 
+  const forgotPassword = () => {};
+
+  const isValidEmail = (email) => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enter you details</Text>
+    <SafeAreaView style={styles.container}>
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { borderTopLeftRadius: 5, borderTopRightRadius: 5, marginTop: 20 },
+        ]}
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={setEmail} // Changed to handleEmailChange
       />
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            borderTopColor: "white",
+            borderBottomLeftRadius: 5,
+            borderBottomRightRadius: 5,
+          },
+        ]}
         placeholder="Password"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
-    </View>
+
+      <Button
+        mode="outlined"
+        textColor={GlobalStyles.colors.black}
+        buttonColor={GlobalStyles.colors.succesGreen}
+        onPress={handleLogin}
+        style={styles.button}
+        disabled={isButtonDisabled}
+      >
+        <Text style={{ fontSize: 16 }}>SIGN IN</Text>
+      </Button>
+      <Text style={{ color: GlobalStyles.colors.errorRed }}>{errorText}</Text>
+      <Button onPress={forgotPassword}>
+        <Text style={{ fontSize: 16, color: GlobalStyles.colors.iosBlue }}>
+          Forgot password
+        </Text>
+      </Button>
+      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 15,
+            color: GlobalStyles.colors.gray,
+          }}
+        >
+          By signing in on Duolingo, you agree to our Terms and Privacy Policy
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   input: {
-    width: '80%',
+    width: "90%",
     height: 40,
-    borderColor: 'gray',
+    borderColor: GlobalStyles.colors.gray,
+    backgroundColor: GlobalStyles.colors.ligthGray,
     borderWidth: 1,
-    marginBottom: 10,
     paddingHorizontal: 10,
+    fontSize: 16,
+  },
+  button: {
+    width: "90%",
+    alignSelf: "center",
+    marginBottom: 30,
+    borderRadius: 8,
+    marginVertical: 15,
   },
 });

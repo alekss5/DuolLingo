@@ -8,10 +8,9 @@ import { loginUser } from "./userReducer";
 import { StyleSheet } from "react-native";
 
 import * as SplashScreen from "expo-splash-screen";
-
 const { fetchFeed, postLoginUser } = require("../utils/http");
 
-export default function FetchData({ isDataFetched,email,password }) {
+export default function FetchData({ isDataFetched,email,password,userFetchResponse }) {
   SplashScreen.preventAutoHideAsync();
 
   const [isDataFetching, setIsDataFetching] = useState(true);
@@ -28,19 +27,17 @@ export default function FetchData({ isDataFetched,email,password }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user data
-   
-        
+        // Fetch user data    
         const lowerEmail = email.toLowerCase();
-        const userResponse = await postLoginUser({
+        const response = await postLoginUser({
           email: lowerEmail,
           password: password,
         });
-
         // Fetch feed data
         const feedResponse = await fetchFeed({ token });
 
         // Dispatch user data
+        const userResponse = response.data
         const userData = {
           name: userResponse.userData.name,
           userName: userResponse.userData.userName,
@@ -62,12 +59,10 @@ export default function FetchData({ isDataFetched,email,password }) {
 
         // Dispatch feed data
         dispatch(setFeed(feedResponse));
-
-        // Hide splash screen
         SplashScreen.hideAsync();
 
-        // Set flags
         setIsDataFetching(false);
+        
         // setTimeoutPassed(true);
       } catch (error) {
         console.log("Error fetching data:", error);
@@ -78,7 +73,6 @@ export default function FetchData({ isDataFetched,email,password }) {
   }, [email,password]);
 
   useEffect(() => {
-    // Trigger isDataFetched when data fetching is complete and timeout has passed
     if (!isDataFetching && isTimeoutPassed) {
       isDataFetched(true);
     }
