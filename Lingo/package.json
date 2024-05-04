@@ -19,6 +19,7 @@
     "expo": "~49.0.15",
     "expo-av": "~13.4.1",
     "expo-blur": "~12.4.1",
+    "expo-cli": "^6.3.10",
     "expo-haptics": "~12.4.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
@@ -45,8 +46,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/react": "^18.2.57"
+    "@babel/core": "^7.20.0"
   },
   "private": true
 }

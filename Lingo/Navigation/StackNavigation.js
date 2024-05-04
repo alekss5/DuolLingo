@@ -80,4 +80,3 @@ export default function StackNavigation({ isUserLoggedin }) {
   );
 }
 
-const styles = StyleSheet.create({});
