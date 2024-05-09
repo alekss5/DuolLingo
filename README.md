@@ -11,8 +11,6 @@
 This is my first big project with React-Native. I wanted to test out as many things as possible and don't wanted to about UI and UX, so I choose to create a Duolingo app.
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 <div >
   
  <h3>Frontend</h3> 
