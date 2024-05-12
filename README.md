@@ -8,7 +8,7 @@
 <img width="1390" alt="Screenshot 2024-05-09 at 23 08 03" src="https://github.com/alekss5/DuolLingo/assets/100772083/447004c8-6ca5-40e3-905e-c56809ed5475">
 
 
-This is my first big project with React-Native. I wanted to test out as many things as possible and don't wanted to about UI and UX, so I choose to create a Duolingo app.
+This is my first big project with React-Native. I wanted to test out as many things as possible but i don't wanted to think about the UI and UX, so I choose to create a Duolingo app.
 
 ### Built With
 <div >
@@ -28,6 +28,17 @@ This is my first big project with React-Native. I wanted to test out as many thi
 	<img width="50" src="https://user-images.githubusercontent.com/25181517/182884177-d48a8579-2cd0-447a-b9a6-ffc7cb02560e.png" alt="mongoDB" title="mongoDB"/> Mongodb
 	<img width="50" src="https://user-images.githubusercontent.com/25181517/121401671-49102800-c959-11eb-9f6f-74d49a5e1774.png" alt="npm" title="npm"/>
 </div>
+
+## Features
+
+The app lets you:
+- Take multiple quizzes
+- Can play sound for each word
+- Haptics and sound feedbacks
+- Buy hearts
+- Login and register (saves the user data for 1 month then you have to login again)
+- Feed for latest news
+- Account information 
 
 
 
