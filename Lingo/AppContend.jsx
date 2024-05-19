@@ -8,6 +8,7 @@ import { Alert, Text } from "react-native";
 import { useRealm } from "@realm/react";
 import { Linking } from "react-native";
 
+
 export default function AppContend() {
   const [isSplashActive, isDataFetched] = useState(false);
   const [isUserLoggedin, setIsUserLoggedIn] = useState(false);
@@ -53,11 +54,14 @@ export default function AppContend() {
       setUserEmail(user.email);
       setUserPassword(user.password);
       setIsUserLoggedIn(true);
+
     }
-  }, [realm]);
+  }, []);
+
 
   if (setShowNetworkAlert) {
   }
+
   return (
     <>
       {/* {showNetworkAlert && (
@@ -82,7 +86,7 @@ export default function AppContend() {
           cancelable={false}
         />
       )} */}
-      {!isNetwork && <Text style={{ textAlign: "center" }}> No network</Text>}
+      {!isNetwork && <Text style={{ textAlign: "center" }}>No network</Text>}
       {isUserLoggedin && (
         <FetchData
           isDataFetched={isDataFetched}

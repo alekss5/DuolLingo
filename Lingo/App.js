@@ -15,6 +15,7 @@ export default function App() {
         <PersistGate loading={null} persistor={persistor}>
           <StatusBar style="dark" />
           <AppContend />
+          
         </PersistGate>
       </Provider>
     </RealmProvider>

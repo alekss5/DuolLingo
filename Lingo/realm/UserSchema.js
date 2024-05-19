@@ -1,4 +1,4 @@
-const { Realm, createRealmContext } = require('@realm/react');
+const { Realm, createRealmContext } = require("@realm/react");
 
 class User extends Realm.Object {
   constructor() {
@@ -7,12 +7,12 @@ class User extends Realm.Object {
 }
 
 User.schema = {
-  name: 'User',
-  primaryKey: '_id',
+  name: "User",
+  primaryKey: "_id",
   properties: {
-    _id: 'objectId',
-    email: 'string',
-    password: 'string',
+    _id: "objectId",
+    email: "string",
+    password: "string",
   },
 };
 

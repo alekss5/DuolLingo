@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Share, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import StatisticsButton from "../UI/StatisticsButton";
 
@@ -27,14 +27,14 @@ export default function Statistics() {
           iconColor="red"
           boldText={steak}
           grayText="Day streak"
-          onPress={() => handleButtonPress("fire", "You' ve earned 0 Day Steak", "Play every day to keep your day streak!",'red',"I've earned 0 Day Steak","Share")}
+          onPress={() => handleButtonPress("fire", `You' ve earned ${steak} Day Steak`, "Play every day to keep your day streak!",'red',`I've earned ${steak} Day Steak`,"Share")}
         />
         <StatisticsButton
           icon="flash-outline"
           iconColor="orange"
           boldText={totalXp}
           grayText="Total XP"
-          onPress={() => handleButtonPress("flash-outline", "You' ve earned 39 XP!", "Do more leassons to earn more XP!","orange","I've earned 39 XP points","Share")}
+          onPress={() => handleButtonPress("flash-outline", `You' ve earned ${totalXp} XP!`, "Do more leassons to earn more XP!","orange",`I've earned ${totalXp} XP points`,"Share")}
         />
       </View>
       <View style={styles.buttonRow}>

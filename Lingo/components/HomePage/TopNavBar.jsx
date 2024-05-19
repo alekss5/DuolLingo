@@ -20,17 +20,21 @@ export default function TopNavBar({openHeartsModal}) {
   const language = useSelector(selectCurrentCourse);
   const hearts = useSelector(selectHearts);
   const points = useSelector(selectPoints);
-  const steak = useSelector(selectDaysStreak);
-
+  const streak = useSelector(selectDaysStreak);
+ 
+  const displayLanguage = language || "DE"; 
+  const displayHearts = hearts !== undefined ? hearts : 0;
+  const displayPoints = points !== undefined ? points : 0;
+  const displayStreak = streak !== undefined ? streak : 0;
 
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <CountryFlag isoCode={language} size={25} style={styles.flag} />
+        <CountryFlag isoCode={displayLanguage} size={25} style={styles.flag} />
       </View>
       <View style={styles.rowContainer}>
         <MaterialCommunityIcons name="fire" size={30} color="orange" />
-        <Text style={styles.steakText}>{steak}</Text>
+        <Text style={styles.steakText}>{displayStreak}</Text>
       </View>
       <View style={styles.rowContainer}>
         <MaterialCommunityIcons
@@ -38,12 +42,12 @@ export default function TopNavBar({openHeartsModal}) {
           size={28}
           color="lightblue"
         />
-        <Text style={styles.pointsText}>{points}</Text>
+        <Text style={styles.pointsText}>{displayPoints}</Text>
       </View>
       <TouchableOpacity onPress={openHeartsModal}>
         <View style={styles.rowContainer}>
           <MaterialCommunityIcons name="heart" size={30} color="red" />
-          <Text style={styles.heartText}> {hearts}</Text>
+          <Text style={styles.heartText}> {displayHearts}</Text>
         </View>
       </TouchableOpacity>
 

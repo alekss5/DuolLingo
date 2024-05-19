@@ -29,7 +29,6 @@ export default function PlayScreen({ navigation }) {
   const userEmail = useSelector(selectEmail);
   const token = useSelector(selectToken)
 
-
   const elapsedTime = useRef(0);
 
   const [modalOpen, setModalOpen] = useState(false);

@@ -1,11 +1,8 @@
-import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabsNavigation from "./BottomTabsNavigation";
-import SettingsScreen from "../screens/SettingsScreen";
 import PlayScreen from "../screens/PlayScreen";
 import FinishScreen from "../screens/FinishScreen";
-
 import AddFrendsModal from "../components/Modals/AddFrendsModal";
 import HeartsModal from "../components/Modals/HeartsModal";
 import NoHeartsScreen from "../screens/NoHeartsScreen";
@@ -14,30 +11,34 @@ import LoginScreen from "../screens/LoginScreen";
 import StartRegisterPage from "../screens/StartRegisterScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import { GlobalStyles } from "../constants/Colors";
+import SettingsStack from "./SettingsStackNavigation";
 
 const Stack = createStackNavigator();
 
-export default function StackNavigation({ isUserLoggedin }) {
+export default function StackNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {!isUserLoggedin && (
-          <Stack.Screen
-            name="haveAcount"
-            component={StartRegisterPage}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-        )}
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabsNavigation}
-          options={{ headerShown: false, gestureEnabled: false }}
+          options={{
+            headerShown: false,
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="SettingsStack"
+          component={SettingsStack}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen name="addFrendModal" component={AddFrendsModal} />
         <Stack.Screen name="heartsModal" component={HeartsModal} />
         <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
+          name="haveAcount"
+          component={StartRegisterPage}
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
@@ -79,4 +80,3 @@ export default function StackNavigation({ isUserLoggedin }) {
     </NavigationContainer>
   );
 }
-

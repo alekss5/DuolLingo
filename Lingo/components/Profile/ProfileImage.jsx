@@ -14,7 +14,7 @@ export default function ProfileImage() {
   function addProfilePicture() {}
 
   function settingsHandler() {
-    navigation.navigate('Settings')
+    navigation.navigate('SettingsStack')
   }
 
   return (

@@ -6,29 +6,14 @@ import CurrentLestonBanner from "../components/HomePage/CurrentLestonBanner";
 import HomeTestPath from "../components/HomePage/HomeTestPath";
 import HeartsModal from "../components/Modals/HeartsModal";
 import { mediumVibration } from "../utils/vibrationPaterns";
-
+import { Dialog } from "react-native-paper";
 
 export default function HomeScreen({ navigation }) {
   const [heartsModal, setHeartsModal] = useState(false);
 
   function openHeartsModal() {
-   mediumVibration()
+    mediumVibration();
     setHeartsModal(true);
-    // fetch("http://localhost:8080/auth/", {
-    //   method: "PUT",
-    //   body: JSON.stringify({
-    //     name: "Aleksandar Grigorov",
-    //     email: "aleksndar305@gmail.com",
-    //     password: "5505667Sa",
-    //     currentCourse: "DE",
-        
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((json) => console.log(json));
   }
 
   function closeHeartsModal() {
@@ -37,6 +22,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+
       <TopNavBar navigation={navigation} openHeartsModal={openHeartsModal} />
       <HeartsModal isModalOpen={heartsModal} closeModal={closeHeartsModal} />
 

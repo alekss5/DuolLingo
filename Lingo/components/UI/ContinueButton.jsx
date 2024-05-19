@@ -8,7 +8,6 @@ export default function ContinueButton({ isPressedCard, submitAnswer,color }) {
       onPress={submitAnswer}
       style={[styles.continueButton, !isPressedCard && styles.pressed]}
       buttonColor={color}
-      
     >
       CONTINUE
     </Button>

@@ -39,6 +39,7 @@ export default function FetchData({ isDataFetched,email,password,userFetchRespon
         // Dispatch user data
         const userResponse = response.data
         const userData = {
+          isLoggedIn:true,
           name: userResponse.userData.name,
           userName: userResponse.userData.userName,
           email: userResponse.userData.email,

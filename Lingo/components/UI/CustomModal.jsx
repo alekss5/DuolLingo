@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Modal } from "react-native";
 import { BlurView } from "expo-blur";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
@@ -30,7 +29,6 @@ export default function CustomModal({
       <BlurView style={styles.absolute} intensity={10} tint="light" />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-
           {icon === "null" ? (
             <LottieView
               source={animationSrc}
@@ -119,9 +117,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-  
     padding: 10,
-
     width: "100%",
   },
   textStyle: {

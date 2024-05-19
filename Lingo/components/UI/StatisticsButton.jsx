@@ -17,9 +17,7 @@ export default function StatisticsButton({ icon,iconColor, boldText, grayText, o
 }
 const styles = StyleSheet.create({
   buttonContainer: {
-   
     minWidth:'47%',
-
     padding: 16,
     borderWidth: 1,
     borderColor:"gray",

@@ -2,10 +2,10 @@
   "name": "duolingo",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start ",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web"
+    "start": "npx nexpo",
+    "android": "npx expo start --android",
+    "ios": "npx expo run:ios",
+    "web": "npx expo start --web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.2",

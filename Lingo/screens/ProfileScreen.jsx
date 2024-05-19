@@ -11,7 +11,6 @@ export default function ProfileScreen() {
       <ProfileImage />
       <ProfileInformation />
       <Statistics />
-      
     </View>
   );
 }

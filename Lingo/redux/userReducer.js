@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  isLoggedIn: false,
   name: null,
   userName: null,
   email: null,
@@ -9,11 +10,11 @@ const initialState = {
   isAuthenticated: false,
   token: null,
   hearts: null,
-  heartDecreaseTime:null,
+  heartDecreaseTime: null,
   points: null,
   daysStreak: null,
   courses: [],
-  currentCourse: null,
+  currentCourse: "BG",
   totalXp: null,
   todayWinSteak: null,
 };
@@ -24,6 +25,7 @@ const userSlice = createSlice({
   reducers: {
     loginUser: (state, action) => {
       const {
+        isLoggedIn,
         name,
         userName,
         email,
@@ -38,6 +40,7 @@ const userSlice = createSlice({
         totalXp,
         todayWinSteak,
       } = action.payload;
+      state.isLoggedIn = isLoggedIn;
       state.name = name;
       state.userName = userName;
       state.email = email;
@@ -53,7 +56,6 @@ const userSlice = createSlice({
       state.totalXp = totalXp;
       state.isAuthenticated = true;
       state.todayWinSteak = todayWinSteak;
-    
     },
     logoutUser: (state) => {
       Object.assign(state, initialState);
@@ -80,7 +82,6 @@ const userSlice = createSlice({
       );
 
       if (currentCourseIndex !== -1) {
-
         state.courses[currentCourseIndex].xp += xp;
       }
 
@@ -92,10 +93,9 @@ const userSlice = createSlice({
   },
 });
 
-
 export const { loginUser, logoutUser, decreceHearts, buyHearts, finish } =
   userSlice.actions;
-
+export const selectIsUserLoggedIn = (state) => state.user.isLoggedIn;
 export const selectName = (state) => state.user.name;
 export const selectUserName = (state) => state.user.userName;
 export const selectEmail = (state) => state.user.email;

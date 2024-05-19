@@ -17,13 +17,14 @@ import {
   REGISTER,
 } from "redux-persist";
 import feedReducer from "./feedReducer";
+import interfaceReducer from "./interfaceReducer";
 
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage:AsyncStorage,
-  whitelist:["user","feed",'homeData','lessons']
+  whitelist:["user","feed",'homeData','lessons','interface']
 };
 
 const rootReducer = combineReducers({ 
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
     user:userReducer,
     feed:feedReducer,
     homeData:homePathReducer,
-    lessons: lessonReducer
+    lessons: lessonReducer,
+    interface:interfaceReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

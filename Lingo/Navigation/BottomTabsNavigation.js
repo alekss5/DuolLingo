@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -9,9 +9,20 @@ import IconButton from "../components/UI/IconButton";
 import FeedScreen from "../screens/FeedScreen";
 import LeaderboardScreen from "../screens/LeaderboardScreen";
 
+import { useSelector } from "react-redux";
+import { selectIsUserLoggedIn } from "../redux/userReducer";
+import { useNavigation } from "@react-navigation/native";
+
 const BottomTabs = createBottomTabNavigator();
 export default function BottomTabsNavigation() {
-  // const GlobalStyles = GStyles(theme);
+  const isUserLoggedin = useSelector(selectIsUserLoggedIn);
+  const navigation = useNavigation()
+
+  if(!isUserLoggedin){
+    navigation.navigate('haveAcount')
+    
+  }
+
   return (
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
@@ -24,12 +35,8 @@ export default function BottomTabsNavigation() {
         tabBarOnPress: () => {
           Vibration.vibrate();
         },
-        
-    
         tabBarItemStyle: {
-      
           borderRadius: 200,
-         
         },
       })}
     >
@@ -40,7 +47,6 @@ export default function BottomTabsNavigation() {
           title: "HomeScreen",
           tabBarLabel: "Home",
           headerShown: false,
-          
 
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="home" size={size} color={color} />
