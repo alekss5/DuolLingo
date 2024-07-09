@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, SafeAreaView, View } from 'react-native'
 import React from 'react'
+import SectionName from '../../components/Settings/SectionName'
 
 export default function PreferencesSettingsScreen() {
   return (
-    <View>
-      <Text>PreferencesSettingsScreen</Text>
-    </View>
+    <SafeAreaView>
+     <SectionName sectionName="Lesson experience"/>
+    </SafeAreaView>
   )
 }
 

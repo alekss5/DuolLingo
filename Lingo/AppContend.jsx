@@ -7,6 +7,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { Alert, Text } from "react-native";
 import { useRealm } from "@realm/react";
 import { Linking } from "react-native";
+import { useDispatch } from "react-redux";
 
 
 export default function AppContend() {
@@ -18,6 +19,7 @@ export default function AppContend() {
 
   const isNetwork = useRef(false);
   const realm = useRealm();
+  const dispatch = useDispatch()
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       isNetwork.current = state.isConnected;
@@ -50,6 +52,13 @@ export default function AppContend() {
 
   useEffect(() => {
     const user = realm.objects("User")[0];
+    if(user === undefined) {
+      console.log('user is undefined')
+      
+      setIsUserLoggedIn(true);
+      isDataFetched(true);
+      
+    }
     if (user) {
       setUserEmail(user.email);
       setUserPassword(user.password);

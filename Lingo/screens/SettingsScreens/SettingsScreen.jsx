@@ -9,10 +9,11 @@ import {
 import { DataTable } from "react-native-paper";
 import { Button } from "react-native-paper";
 import { GlobalStyles } from "../../constants/Colors";
-import WideIconButton from "../../components/UI/WideIconButton";
+import WideIconButton from "../../components/Settings/WideIconButton";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userReducer";
 import { sureModalAction } from "../../redux/interfaceReducer";
+import SectionName from "../../components/Settings/SectionName";
 
 export default function SettingsScreen({ navigation }) {
   const dispatch = useDispatch()
@@ -34,7 +35,7 @@ export default function SettingsScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
-        <Text style={styles.header}>Account</Text>
+        <SectionName sectionName="Account"/>
         <DataTable style={styles.settingsTable}>
           <DataTable.Row style={styles.tableRow}>
             <WideIconButton
@@ -67,8 +68,7 @@ export default function SettingsScreen({ navigation }) {
             />
           </DataTable.Row>
         </DataTable>
-
-        <Text style={styles.header}>Support</Text>
+        <SectionName sectionName="Support"/>
         <DataTable style={styles.settingsTable}>
           <DataTable.Row style={styles.tableRow}>
             <WideIconButton
@@ -112,13 +112,6 @@ export default function SettingsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    padding: 15,
-    paddingBottom: 10,
-    fontSize: 20,
-    color: "gray",
-    fontWeight: "500",
-  },
   settingsTable: {
     width: "95%",
     borderColor: "lightgrey",

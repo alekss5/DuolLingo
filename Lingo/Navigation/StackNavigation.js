@@ -16,9 +16,17 @@ import SettingsStack from "./SettingsStackNavigation";
 const Stack = createStackNavigator();
 
 export default function StackNavigation() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          name="SettingsStack"
+          component={SettingsStack}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabsNavigation}
@@ -27,13 +35,7 @@ export default function StackNavigation() {
             gestureEnabled: false,
           }}
         />
-        <Stack.Screen
-          name="SettingsStack"
-          component={SettingsStack}
-          options={{
-            headerShown: false,
-          }}
-        />
+    
         <Stack.Screen name="addFrendModal" component={AddFrendsModal} />
         <Stack.Screen name="heartsModal" component={HeartsModal} />
         <Stack.Screen

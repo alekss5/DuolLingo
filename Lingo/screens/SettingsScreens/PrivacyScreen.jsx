@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function SocialsSettingsScreen() {
+export default function PrivacyScreen() {
   return (
     <View>
-      <Text>SocialsSettingsScreen</Text>
+      <Text>PrivacyScreen</Text>
     </View>
   )
 }
